@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang='tr'>
+<head>
+    <meta charset='UTF-8'>
+    <title>BOF ve SDM Dinamik Grafik Paneli</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center; 
+            align-items: flex-start; 
+            padding: 40px;
+            margin: 0;
+            background-color: #f5f6fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .ana-konteyner {
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            column-gap: 120px; 
+        }
+        .sutun {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .grup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px; 
+        }
+        .baslik {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2f3640;
+            margin-bottom: 12px;
+        }
+        .daire-bof {
+            width: 260px;
+            height: 260px;
+            background-color: #dcdde1;
+            border: 10px solid #000000;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #000000;
+            text-align: center;
+            line-height: 1.2;
+        }
+                /* --- YENİ EKLENEN ALT BİLGİ CSS SINIFLARI --- */
+        .bof-alt-bilgi {
+            margin-top: 15px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: bold; 
+            color: #2f3640;
+            line-height: 1.4;
+/* Yeni Eklenen Çerçeve Özellikleri */
+            border: 2px solid #000000;    /* 2 piksel kalınlığında siyah düz çizgi */
+            border-radius: 8px;           /* Köşeleri hafifçe yumuşatır */
+            padding: 10px 15px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
+            background-color: #ffffff;    /* Arka planı beyaz yaparak paneli öne çıkarır */
+            width: 250px;                 /* Çerçevenin genişliğini sabitleyerek düzenli durmasını sağlar */
+            box-sizing: border-box;       /* Genişlik hesaplamasını otomatik ayarlar */
+       
+        }
+        .bof-alt-bilgi .ust-baslik {
+            font-weight: bold;
+            font-size: 20px;
+            text-decoration: underline;
+            margin-bottom: 4px;
+        }
+                /* --- YENİ EKLENEN ALT BİLGİ CSS SINIFLARI --- */
+        .maden-bilgi {
+            margin-top: 15px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: bold; 
+            color: #2f3640;
+            line-height: 1.4;
+/* Yeni Eklenen Çerçeve Özellikleri */
+            border: 2px solid #000000;    /* 2 piksel kalınlığında siyah düz çizgi */
+            border-radius: 8px;           /* Köşeleri hafifçe yumuşatır */
+            padding: 10px 15px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
+            background-color: #ffffff;    /* Arka planı beyaz yaparak paneli öne çıkarır */
+            width: 250px;                 /* Çerçevenin genişliğini sabitleyerek düzenli durmasını sağlar */
+            box-sizing: border-box;       /* Genişlik hesaplamasını otomatik ayarlar */
+       
+        }
+        .maden-bilgi .ust-baslik {
+            font-weight: bold;
+            font-size: 20px;
+            text-decoration: underline;
+            margin-bottom: 4px;
+        }
+
+        .daire-sdm {
+            width: 130px;
+            height: 130px;
+            background-color: #dcdde1;
+            border: 10px solid #000000;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #000000;
+            text-align: center;
+            line-height: 1.1;
+        }
+        .dikdortgen-sdm {
+            width: 195px;
+            height: 65px;
+            background-color: #dcdde1; 
+            border: 5px solid #000000;  
+            margin-top: 15px;            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #000000;
+            font-size: 26px;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+            .kutu-ust-yazi {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2f3640;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .kucuk-kutular-konteyner {
+            display: flex;
+            gap: 4px;           
+            margin-top: 10px;   
+        }
+        .kucuk-kutu {
+            width: 27px;
+            height: 65px;       
+            border: 3px solid #000000; 
+            box-sizing: border-box;
+        }
+        /* 1 ve 0 durumlarına göre arka plan renk sınıfları */
+        .kirmizi { background-color: #ff4757; }
+        .beyaz { background-color: #ffffff; }
+
+        .daire-bof .dokum-no { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .daire-bof .ana-sayi { font-size: 34px; font-weight: bold; margin-bottom: 6px; }
+        .daire-bof .kampanya-etiket { font-size: 14px; font-weight: 600; text-transform: uppercase; }
+        .daire-bof .kampanya-deger { font-size: 20px; font-weight: bold; margin-top: 2px; }
+
+        .daire-sdm .dokum-no { font-size: 10px; font-weight: 600; margin-bottom: 2px; }
+        .daire-sdm .ana-sayi { font-size: 18px; font-weight: bold; margin-bottom: 2px; }
+        .daire-sdm .kampanya-etiket { font-size: 9px; font-weight: 600; text-transform: uppercase; }
+        .daire-sdm .kampanya-deger { font-size: 13px; font-weight: bold; }
+
+        .alt-orta-tarih {
+            position: fixed;
+            left: 50%;
+            bottom: 10px;
+            transform: translateX(-50%);
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            font-weight: bold; 
+            color: #555555;
+            background-color: rgba(255, 255, 255, 0.8); /* Arka planı hafif şeffaf yapar */
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 1000; /* Diğer elementlerin üstünde görünmesi için */
+        }
+    </style>
+</head>
+<body>
+
+    <div class='ana-konteyner'>
+        
+        <!-- SOL SÜTUN: BOF Daireleri -->
+        <div class='sutun'>
+            <div class='grup'>
+                <div class='baslik'>BOF1</div>
+                <div class='daire-bof'>
+                    <div class='dokum-no'>Döküm No</div>
+                    <div class='ana-sayi'>2615674</div>
+                    <div class='kampanya-etiket'>Kampanya D.S.</div>
+                    <div class='kampanya-deger'>5838</div>
+                </div>
+            </div>
+
+            <div class='grup'>
+                <div class='baslik'>BOF2</div>
+                <div class='daire-bof'>
+                    <div class='dokum-no'>Döküm No</div>
+                    <div class='ana-sayi'>2625429</div>
+                    <div class='kampanya-etiket'>Kampanya D.S.</div>
+                    <div class='kampanya-deger'>4185</div>
+                </div>
+            </div>
+
+            <div class='grup'>
+                <div class='baslik'>BOF3</div>
+                <div class='daire-bof'>
+                    <div class='dokum-no'>Döküm No</div>
+                    <div class='ana-sayi'>2635477</div>
+                    <div class='kampanya-etiket'>Kampanya D.S.</div>
+                    <div class='kampanya-deger'>572</div>
+                </div>
+                    <div class='bof-alt-bilgi'>
+                    <div class='ust-baslik'>Döküm Sayıları</div>
+                    <div>Dün     :   67</div>
+                    <div>00-08   :   27</div>
+                    <div>08-16   :   11</div>
+                    <div>16-24   :   0 </div>
+                    
+                </div>
+                    <div class='maden-bilgi'>
+                    <div class='ust-baslik'>Sıvı Maden Miktarları</div>
+                    <div>De-SU öncesi : 579</div>
+                    <div>De-SU sonrası : 93</div>
+                    <div>Toplam Maden : 672</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAĞ SÜTUN: SDM Daireleri, Büyük Dikdörtgenleri ve Dinamik Kutuları -->
+        <div class='sutun'>
+            <!-- 1. SDM Grubu -->
+            <div class='grup'>
+                <div class='baslik'>SDM1</div>
+                <div class='daire-sdm'>
+                    <div class='dokum-no'>Döküm No</div>
+                    <div class='ana-sayi'>2625426</div>
+                </div>
+                <div class='dikdortgen-sdm'>1</div>
+                <div class='kutu-ust-yazi'>▐▌150x150</div>
+                <div class='kucuk-kutular-konteyner'>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+</div>
+
+            </div>
+
+            <!-- 2. SDM Grubu -->
+            <div class='grup'>
+                <div class='baslik'>SDM2</div>
+                <div class='daire-sdm'>
+                    <div class='dokum-no'>Döküm No</div>
+                    <div class='ana-sayi'>0</div>
+                 </div>
+                <div class='dikdortgen-sdm'>0</div>
+                <div class='kucuk-kutular-konteyner'>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+</div>
+
+            </div>
+
+            <!-- 3. SDM Grubu -->
+            <div class='grup'>
+                <div class='baslik'>SDM3</div>
+                <div class='daire-sdm'>
+                    <div class='dokum-no'>Döküm No</div>
+                    <div class='ana-sayi'>2635473</div>
+               </div>
+                <div class='dikdortgen-sdm'>6</div>
+                <div class='kutu-ust-yazi'>██ 320 x 480</div>
+                <div class='kucuk-kutular-konteyner'>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+</div>
+
+            </div>
+
+            <!-- 4. SDM Grubu -->
+            <div class='grup'>
+                <div class='baslik'>SDM4</div>
+                <div class='daire-sdm'>
+                    <div class='dokum-no'>Döküm No</div>
+                    <div class='ana-sayi'>2615671</div>
+                  </div>
+                <div class='dikdortgen-sdm'>15</div>
+                 <div class='kutu-ust-yazi'>▐▌ 150 x 150</div>
+                <div class='kucuk-kutular-konteyner'>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
+</div>
+
+            </div>
+        </div>
+
+    </div>
+<div class='alt-orta-tarih'>16.09.2026 13:00</div>
+</body>
+</html>
