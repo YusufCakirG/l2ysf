@@ -158,9 +158,23 @@
         .daire-sdm .kampanya-deger { font-size: 13px; font-weight: bold; }
 
         .alt-orta-tarih {
-            position: absolute;
+            position: fixed;
             left: 50%;
             bottom: 10px;
+            transform: translateX(-50%);
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            font-weight: bold; 
+            color: #555555;
+            background-color: rgba(255, 255, 255, 0.8); /* Arka planı hafif şeffaf yapar */
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 1000; /* Diğer elementlerin üstünde görünmesi için */
+        }
+        .alt-orta-buton {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
             transform: translateX(-50%);
             font-family: Arial, sans-serif;
             font-size: 32px;
@@ -193,9 +207,9 @@
                 <div class='baslik'>BOF2</div>
                 <div class='daire-bof'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2625450</div>
+                    <div class='ana-sayi'>2625451</div>
                     <div class='kampanya-etiket'>Kampanya D.S.</div>
-                    <div class='kampanya-deger'>4206</div>
+                    <div class='kampanya-deger'>4207</div>
                 </div>
             </div>
 
@@ -217,9 +231,9 @@
                 </div>
                     <div class='maden-bilgi'>
                     <div class='ust-baslik'>Sıvı Maden Miktarları</div>
-                    <div>De-SU öncesi : 290</div>
-                    <div>De-SU sonrası : 100</div>
-                    <div>Toplam Maden : 390</div>
+                    <div>De-SU öncesi : 159</div>
+                    <div>De-SU sonrası : 131</div>
+                    <div>Toplam Maden : 290</div>
                 </div>
             </div>
         </div>
@@ -307,14 +321,14 @@
 
 
 
-<div class='alt-orta-tarih'>17.09.2026 10:40</div>
+<div class='alt-orta-tarih'>17.09.2026 10:50</div>
 
 <!-- ============================================================== -->
     <!-- 2. SAYFAYA GEÇİŞ LİNKİ (BURAYA EKLEYİN) -->
     <!-- ============================================================== -->
 
    
-<div class='alt-orta-tarih'>
+<div class='alt-orta-buton'>
  
     <a href='hurda_fiyat.html' style='display: inline-block; padding: 10px 20px; background-color: #2f3640; color: white; text-decoration: none; font-size: 16px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); white-space: nowrap;'>
         Hurda Fiyatlarını Gör ➔
