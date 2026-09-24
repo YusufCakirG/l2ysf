@@ -169,32 +169,46 @@
         return r;
     }
 
-    // Google Sheets'ten Çekip Şifre Çözme
+    // Google Sheets'ten Çekip Şifre Çözme (Hata Detaylandırmalı Kesin Sürüm)
     async function verileriYukle() {
         try {
+            console.log("Sheet1 ve Sheet2 verileri çekiliyor...");
+            
             const [res1, res2] = await Promise.all([
-                fetch(SHEET1_CSV_URL).then(r => r.text()),
-                fetch(SHEET2_CSV_URL).then(r => r.text())
+                fetch(SHEET1_CSV_URL).then(r => {
+                    if (!r.ok) throw new Error("Sheet1 indirilemedi (HTTP " + r.status + ")");
+                    return r.text();
+                }),
+                fetch(SHEET2_CSV_URL).then(r => {
+                    if (!r.ok) throw new Error("Sheet2 indirilemedi (HTTP " + r.status + ")");
+                    return r.text();
+                })
             ]);
+
+            console.log("Ham veriler başarıyla alındı. Ayrıştırma başlıyor...");
 
             // Hücreleri temizleyerek eşliyoruz
             anaVeriler = csvToArray(res1).map(row => row.map(cell => veriCoz(cell)));
             detayVeriler = csvToArray(res2).map(row => row.map(cell => veriCoz(cell)));
 
-            // Gelen ilk verinin başarıyla çözülüp çözülmediğini test ediyoruz
+            // Şifre kontrol testi
             if (anaVeriler.length > 0) {
                 let testCell = anaVeriler[0][0];
-                // Eğer ilk hücre hala 16'lık sistemde çözülmeden kalmışsa şifreleme veya şifre uyuşmazlığı vardır
-                if (/^[0-9a-fA-F]+\$/.test(testCell) && testCell.length > 10) {
-                    alert("Şifre yanlış veya veriler çözülemedi! Lütfen şifrenizi kontrol edip tekrar deneyin.");
+                if (/^[0-9a-fA-F]+$/.test(testCell) && testCell.length > 10) {
+                    alert("Giriş başarısız: Şifre yanlış veya şifrelenmiş Hex verisi çözülemedi!");
                     location.reload();
                     return;
                 }
             }
 
+            console.log("Şifreler başarıyla çözüldü, tablo çiziliyor...");
             tabloyuCiz(anaVeriler);
+
         } catch (error) {
-            alert("Bağlantı hatası! Google Sheets ID'nizi ve paylaşım ayarlarını kontrol edin.");
+            // KRİTİK GÜNCELLEME: Genel uyarı yerine gerçek teknik hatayı ekrana basıyoruz
+            console.error("Detaylı Hata:", error);
+            alert("Bağlantı/Ayrıştırma Hatası Gerçekleşti!\n\nTeknik Detay: " + error.message + 
+                  "\n\nLütfen kopyaladığınız CSV linklerinin doğruluğunu kontrol edin.");
         }
     }
 
