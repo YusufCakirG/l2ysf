@@ -187,24 +187,31 @@
         }
     }
 
-    function tabloyuCiz(veriler) {
-        const tbody = document.getElementById('sheet1TableBody');
-        if(veriler.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Bugüne ait kayıt bulunamadı.</td></tr>`;
-            return;
-        }
-
-        tbody.innerHTML = veriler.map(row => `
-            <tr onclick="detayGoster(this, '\${row[0]}')" style="cursor:pointer;">
-                <td><strong>\${row[0] || ''}</strong></td>
-                <td>\${row[1] || ''}</td>
-                <td>\${row[2] || ''}</td>
-                <td>\${row[3] || ''}</td>
-                <td>\${row[4] || ''}</td>
-                <td>\${row[5] || ''}</td>
-            </tr>
-        `).join('');
+   function tabloyuCiz(veriler) {
+    const tbody = document.getElementById('sheet1TableBody');
+    if (veriler.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Bugüne ait kayıt bulunamadı.</td></tr>';
+        return;
     }
+
+    let htmlIcerik = "";
+    
+    for (let i = 0; i < veriler.length; i++) {
+        let row = veriler[i];
+        
+        // Klasik ve hatasız string birleştirme yöntemiyle tablo satırlarını oluşturuyoruz
+        htmlIcerik += "<tr onclick=\"detayGoster(this, '" + (row[0] || '') + "')\" style=\"cursor:pointer;\">";
+        htmlIcerik += "<td><strong>" + (row[0] || '') + "</strong></td>";
+        htmlIcerik += "<td>" + (row[1] || '') + "</td>";
+        htmlIcerik += "<td>" + (row[2] || '') + "</td>";
+        htmlIcerik += "<td>" + (row[3] || '') + "</td>";
+        htmlIcerik += "<td>" + (row[4] || '') + "</td>";
+        htmlIcerik += "<td>" + (row[5] || '') + "</td>";
+        htmlIcerik += "</tr>";
+    }
+
+    tbody.innerHTML = htmlIcerik;
+}
 
     function filtrele() {
         const txtAnaNo = document.getElementById('searchAnaNo').value.toLowerCase().trim();
