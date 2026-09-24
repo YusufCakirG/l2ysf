@@ -226,30 +226,32 @@
         tabloyuCiz(filtrelenmis);
     }
 
-    function detayGoster(element, anaNo) {
-        document.querySelectorAll('#sheet1TableBody tr').forEach(tr => tr.classList.remove('selected'));
-        element.classList.add('selected');
+  function detayGoster(element, anaNo) {
+    document.querySelectorAll('#sheet1TableBody tr').forEach(tr => tr.classList.remove('selected'));
+    element.classList.add('selected');
 
-        const altBilesenler = detayVeriler.filter(d => d[0] && d[0].toLowerCase() === anaNo.toLowerCase());
-        const detailContainer = document.getElementById('detailContainer');
+    const altBilesenler = detayVeriler.filter(d => d && d[0] && d[0].toLowerCase() === anaNo.toLowerCase());
+    const detailContainer = document.getElementById('detailContainer');
 
-        if(altBilesenler.length === 0) {
-            detailContainer.innerHTML = `<div class="alert alert-warning mt-2">Bu analize ait alt bileşen bulunamadı.</div>`;
-            return;
-        }
-
-        let html = `<h5 class="mb-3">Analiz: <span class="text-primary">\${anaNo}</span></h5>`;
-        html += `<ul class="list-group shadow-sm">`;
-        altBilesenler.forEach(b => {
-            html += `
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>🧪 <strong>\${b[1]}</strong></span>
-                    <span class="badge bg-primary rounded-pill fs-6">\${b[2]}</span>
-                </li>`;
-        });
-        html += `</ul>`;
-        detailContainer.innerHTML = html;
+    if (altBilesenler.length === 0) {
+        detailContainer.innerHTML = '<div class="alert alert-warning mt-2">Bu analize ait alt bileşen bulunamadı.</div>';
+        return;
     }
+
+    // Tırnak hatasını sıfırlayan klasik ve hatasız string birleştirme yöntemi
+    let html = '<h5 class="mb-3">Analiz: <span class="text-primary">' + anaNo + '</span></h5>';
+    html += '<ul class="list-group shadow-sm">';
+    
+    altBilesenler.forEach(b => {
+        html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+        html += '<span>🧪 <strong>' + (b[1] || '') + '</strong></span>';
+        html += '<span class="badge bg-primary rounded-pill fs-6">' + (b[2] || '') + '</span>';
+        html += '</li>';
+    });
+    
+    html += '</ul>';
+    detailContainer.innerHTML = html;
+}
 </script>
 </body>
 </html>
