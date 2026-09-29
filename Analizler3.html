@@ -447,19 +447,19 @@ return;
 data.forEach(item => {
 const tr = document.createElement('tr');
 const formatliTarih = item.ANA_DATE ? new Date(item.ANA_DATE).toLocaleString('tr-TR') : '';
-tr.innerHTML = `
-${item.ANA_NO ?? ''}
-${item.HT_NO ?? ''}
-${item.SMP_NO ?? ''}
-${item.LOCAT ?? ''}
-${item.DESCR ?? ''}
-${formatliTarih}
-`;
+ tr.innerHTML = `
+            <td>${item.ANA_NO ?? ''}</td>
+            <td>${item.HT_NO ?? ''}</td>
+            <td>${item.SMP_NO ?? ''}</td>
+            <td>${item.LOCAT ?? ''}</td>
+            <td>${item.DESCR ?? ''}</td>
+            <td>${formatliTarih}</td>
+        `;
 tableBody.appendChild(tr);
 });
 } catch (error) {
-console.error("Hata detayı:", error);
-tableBody.innerHTML = <tr><td colspan="6" class="status-row" style="color: #dc2626; font-weight: 600;">Veri yükleme hatası: ${error.message}</td></tr>;
+    console.error("Hata detayı:", error);
+    tableBody.innerHTML = `<tr><td colspan="6" class="status-row" style="color: #dc2626; font-weight: 600;">Veri yükleme hatası: ${error.message}</td></tr>`;
 }
 }
 </script>
