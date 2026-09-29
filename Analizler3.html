@@ -427,7 +427,13 @@ async function veriGetir() {
         if (secilenTarih) {
             apiTargetUrl += `&ANA_DATE=gte.${secilenTarih}T00:00:00&ANA_DATE=lte.${secilenTarih}T23:59:59`;
         }
-        
+
+         // Konum Filtresi: Supabase 'ilike' ile büyük/küçük harf duyarsız kısmi eşleşme yapar
+        if (secilenKonum && secilenKonum !== 'ALL') {
+            const temizKonum = secilenKonum.trim();
+            apiTargetUrl += `&LOCAT=ilike.*${temizKonum}*`;
+        }
+                     
        const response = await fetch(apiTargetUrl, {
             method: "GET",
             headers: {
