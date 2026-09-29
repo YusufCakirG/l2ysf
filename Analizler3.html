@@ -457,9 +457,9 @@ const formatliTarih = item.ANA_DATE ? new Date(item.ANA_DATE).toLocaleString('tr
         `;
 tableBody.appendChild(tr);
 });
-} catch (error) {
-    console.error("Hata detayı:", error);
-    tableBody.innerHTML = `<tr><td colspan="6" class="status-row" style="color: #dc2626; font-weight: 600;">Veri yükleme hatası: ${error.message}</td></tr>`;
-}
+ } catch (error) {
+        console.error("Hata detayı:", error);
+        tableBody.innerHTML = "<tr><td colspan='6' class='status-row' style='color: #dc2626; font-weight: 600;'>Veri yükleme hatası: " + error.message + "</td></tr>";
+    }
 }
 </script>
