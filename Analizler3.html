@@ -435,14 +435,30 @@
 
             let data = await response.json();
 
-            // Kriter 1: Tarih Filtreleme (ANA_DATE)
+           // 1. Tarih Süzgeci (Zaman Damgasını Gün Formatına Çevirerek Eşleştirir)
             if (secilenTarih) {
-                data = data.filter(item => item.ANA_DATE && item.ANA_DATE.startsWith(secilenTarih));
+                data = data.filter(item => {
+                    if (!item.ANA_DATE) return false;
+                    
+                    // Supabase'den gelen timestamp değerini (örn: 2026-09-29 11:15:00 veya ISO string) 
+                    // düz bir metne çevirip ilk 10 karakterini (YYYY-MM-DD) kesiyoruz.
+                    const dbTarihFormati = String(item.ANA_DATE).trim().substring(0, 10);
+                    
+                    return dbTarihFormati === secilenTarih;
+                });
             }
             
-            // Kriter 2: Konum Filtreleme (LOCAT)
-            if (secilenKonum !== 'ALL') {
-                data = data.filter(item => item.LOCAT === secilenKonum);
+            // 2. Konum Süzgeci (Arayüzdeki Türkçe isimler ile Veritabanındaki Kodları Eşleştirir)
+            if (secilenKonum && secilenKonum !== 'ALL') {
+                data = data.filter(item => {
+                    if (!item.LOCAT) return false;
+                    
+                    const veritabanindakiKonum = String(item.LOCAT).trim().toUpperCase();
+                    const secilenArayuzKonumu = String(secilenKonum).trim().toUpperCase();
+                    
+                    // Eğer arayüzden seçilen değer (örn: DESU) veritabanındakiyle (örn: DESU) uyuşuyorsa veya içeriyorsa
+                    return veritabanindakiKonum.includes(secilenArayuzKonumu) || secilenArayuzKonumu.includes(veritabanindakiKonum);
+                });
             }
             
             // Kriter 3: Döküm No Filtreleme (HT_NO)
