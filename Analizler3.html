@@ -492,10 +492,7 @@ document.getElementById("supabaseTableBody").addEventListener("click", function(
         // Satırın 0. indeksindeki (en baştaki "No") hücrenin metnini alıyoruz
         const anaNo = satir.cells[0].innerText;
         
-        // 2. tablodaki hedef hücreye bu No değerini yazdırıyoruz
-        document.getElementById("hedefHujre").innerText = anaNo;
-
-        // İsteğe bağlı: Tıklanan satırı renklendirme
+       // İsteğe bağlı: Tıklanan satırı renklendirme
         const tumSatirlar = this.querySelectorAll("tr");
         tumSatirlar.forEach(s => s.style.backgroundColor = ""); // Eski renkleri temizle
         satir.style.backgroundColor = "#e0f7fa"; // Yeni satırı boya
