@@ -363,7 +363,7 @@
         txtAnaNo.innerText = "Sorgulanıyor...";
         txtAnaNo.style.color = "#f59e0b"; // Turuncu
 
-        const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
+        const sorguParametreleri = "?select=ANA_NO,HT_NO&order=ANA_NO.desc&limit=1";
         const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}${sorguParametreleri}`;
 
         try {
