@@ -470,7 +470,9 @@
             if (girilenDokumNo !== '') {
                 data = data.filter(item => item.HT_NO && String(item.HT_NO).toLowerCase().includes(girilenDokumNo.toLowerCase()));
             }
-
+  // Filtrelerden sonra elimizde kalan veriyi konsola yazdırıp kontrol edelim:
+            console.log("Filtreleme Sonrası Kalan Veri Sayısı:", data.length);
+            console.log("Tabloya Yazılacak Veriler:", data);
             tableBody.innerHTML = '';
             
             if (data.length === 0) {
@@ -495,7 +497,7 @@
 
         } catch (error) {
             console.error("Tablo yükleme hatası:", error);
-            tableBody.innerHTML = "<tr><td colspan='6' class='status-row' style='color: #dc2626; font-weight: 600;'>Veri yükleme hatası: " + error.message + "</td></tr>";
+                      tableBody.innerHTML = "<tr><td colspan='6' class='status-row' style='color: #dc2626; font-weight: 600;'>Veri yükleme hatası: " + error.message + "</td></tr>";
         }
     }
 </script>
