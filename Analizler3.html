@@ -435,14 +435,19 @@
 
             let data = await response.json();
 
-           // 1. Tarih Süzgeci (Zaman Damgasını Gün Formatına Çevirerek Eşleştirir)
+            // 1. Tarih Süzgeci (Zaman Damgasını ISO Biçimine Çevirerek Eşleştirir)
             if (secilenTarih) {
                 data = data.filter(item => {
                     if (!item.ANA_DATE) return false;
                     
-                    // Supabase'den gelen timestamp değerini (örn: 2026-09-29 11:15:00 veya ISO string) 
-                    // düz bir metne çevirip ilk 10 karakterini (YYYY-MM-DD) kesiyoruz.
-                    const dbTarihFormati = String(item.ANA_DATE).trim().substring(0, 10);
+                    // Supabase'den gelen timestamp değerini gerçek bir Javascript Date nesnesine çeviriyoruz
+                    const tarihNesnesi = new Date(item.ANA_DATE);
+                    
+                    // Geçersiz bir tarih gelirse filtre dışı bırakır
+                    if (isNaN(tarihNesnesi.getTime())) return false;
+                    
+                    // Tarihi YYYY-MM-DD (Örn: 2026-09-29) formatına dönüştürür
+                    const dbTarihFormati = tarihNesnesi.toISOString().split('T')[0];
                     
                     return dbTarihFormati === secilenTarih;
                 });
