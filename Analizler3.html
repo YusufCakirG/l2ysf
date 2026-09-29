@@ -390,10 +390,11 @@
 
             // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
             const enBuyukAnaNo = veriler[0].ANA_NO;
+             const enBuyukhtNo = veriler[0].HT_NO;
             
             txtAnaNo.innerText = enBuyukAnaNo;
             txtAnaNo.style.color = "#28a745"; // Başarılı yeşil
-            console.log("En yüksek ANA_NO başarıyla alındı:", enBuyukAnaNo);
+            console.log("En yüksek ANA_NO başarıyla alındı:", enBuyukAnaNo," / ",enBuyukhtNo);
 
         } catch (error) {
             console.error("Buton işlem hatası:", error);
