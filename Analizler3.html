@@ -354,7 +354,7 @@ async function enBuyukAnaNoGetir() {
     txtAnaNo.innerText = "Yükleniyor...";
     txtAnaNo.style.color = "orange";
 
-    // Supabase URL Yapısı: ANA_NO'ya göre AZALAN sırala (desc) ve sadece 1 kayıt getir (limit=1)
+    // Supabase URL Yapısı: ANA_NO'ya göre büyükten küçüğe sırala ve sadece 1 kayıt getir
     const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
     const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}${sorguParametreleri}`;
 
@@ -374,24 +374,24 @@ async function enBuyukAnaNoGetir() {
 
         const veriler = await response.json();
 
-        // Veri tabanında hiç kayıt yoksa dizi boş döner
-        if (veriler.length === 0) {
+        // Veritabanında hiç kayıt yoksa dizi boş döner
+        if (!veriler || veriler.length === 0) {
             txtAnaNo.innerText = "Tabloda hiç kayıt bulunamadı.";
             txtAnaNo.style.color = "red";
             return;
         }
 
-        // En büyük değer listenin ilk elemanıdır
+        // Doğru İndeksleme: En büyük değer listenin İLK ELEMANININ (0. indeks) içindedir
         const enBuyukAnaNo = veriler[0].ANA_NO;
         
         // Ekrana yazdırma
         txtAnaNo.innerText = enBuyukAnaNo;
-        txtAnaNo.style.color = "#28a745"; // Yeşil renk
+        txtAnaNo.style.color = "#28a745"; // Başarılı olunca yeşil renk yapar
         console.log("En Büyük ANA_NO Başarıyla Çekildi:", enBuyukAnaNo);
 
     } catch (error) {
         console.error("En büyük ANA_NO çekilirken hata oluştu:", error);
-        txtAnaNo.innerText = "Hata oluştu! Konsolu (F12) kontrol edin.";
+        txtAnaNo.innerText = "Hata oluştu! F12 konsolunu kontrol edin.";
         txtAnaNo.style.color = "red";
     }
 }
