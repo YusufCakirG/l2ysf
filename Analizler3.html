@@ -292,35 +292,26 @@
     </div>
 
     <!-- 2. Tablo (Bileşen Bilgileri) -->
-    <div class="table-container table-side">
-        <table>
-            <colgroup>
-                <col class="col-half">
-                <col class="col-half">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>Bileşen</th>
-                    <th>Yüzde</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <!-- BURAYA id="hedefHujre" EKLEDİK: Tıklanan satırdaki 'No' değeri buraya yazılacak -->
-                    <td id="hedefHujre">Demir (Fe)</td>
-                    <td>% 92.4</td>
-                </tr>
-                <tr>
-                    <td>Karbon (C)</td>
-                    <td>% 4.2</td>
-                </tr>
-                <tr>
-                    <td>Silisyum (Si)</td>
-                    <td>% 2.1</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+   <div class="table-container table-side">
+    <table>
+        <colgroup>
+            <col class="col-half">
+            <col class="col-half">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Bileşen</th>
+                <th>Yüzde</th>
+            </tr>
+        </thead>
+        <!-- SADECE BURAYA id="bileşenTableBody" EKLEDİK -->
+        <tbody id="bileşenTableBody">
+            <tr>
+                <td colspan="2" class="status-row">Lütfen soldan bir satır seçin...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 </div>
     <!-- En büyük ANA_NO değerini getiren buton ve sonuç alanı -->
@@ -510,6 +501,66 @@ document.getElementById("supabaseTableBody").addEventListener("click", function(
         satir.style.backgroundColor = "#e0f7fa"; // Yeni satırı boya
     }
 });
+
+    document.getElementById("supabaseTableBody").addEventListener("click", async function(event) {
+    const satir = event.target.closest("tr");
+    
+    // Satır geçerliyse ve "Veriler bekleniyor..." satırı değilse işleme al
+    if (satir && !satir.querySelector(".status-row")) {
+        
+        // İlk tablodan tıklanan satırın en başındaki ANA_NO değerini alıyoruz
+        const secilenAnaNo = satir.cells[0].innerText;
+        
+        // Görsel Geri Bildirim: Seçilen satırı renklendir, eski seçilenleri temizle
+        const tumSatirlar = this.querySelectorAll("tr");
+        tumSatirlar.forEach(s => s.style.backgroundColor = "");
+        satir.style.backgroundColor = "#e0f7fa";
+
+        // İkinci tabloyu yükleniyor durumuna getir
+        const bilesenBody = document.getElementById("bileşenTableBody");
+        bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Veriler çekiliyor (${secilenAnaNo})...</td></tr>`;
+
+        // Supabase sorgu fonksiyonunu tetikle
+        await bilesenVerileriniGetir(secilenAnaNo);
+    }
+});
+
+// Supabase'den COMP ve DEGER verilerini çeken fonksiyon
+async function bilesenVerileriniGetir(anaNoDegeri) {
+    const bilesenBody = document.getElementById("bileşenTableBody");
+
+    try {
+        // ana_comp_table tablosundan COMP ve DEGER sütunlarını ANA_NO filtresiyle çekiyoruz
+        const { data, error } = await supabase
+            .from('ana_comp_table')
+            .select('COMP, DEGER')
+            .eq('ANA_NO', anaNoDegeri);
+
+        if (error) throw error;
+
+        // Eğer veritabanında bu ANA_NO'ya ait hiçbir bileşen kaydı yoksa
+        if (!data || data.length === 0) {
+            bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Bu numara için bileşen verisi bulunamadı.</td></tr>`;
+            return;
+        }
+
+        // Tabloyu temizle ve gelen tüm COMP & DEGER verilerini döngüyle alt alta yazdır
+        bilesenBody.innerHTML = "";
+        data.forEach(satir => {
+            const yeniSatir = `
+                <tr>
+                    <td>${satir.COMP}</td>
+                    <td>% ${satir.DEGER}</td>
+                </tr>
+            `;
+            bilesenBody.insertAdjacentHTML('beforeend', yeniSatir);
+        });
+
+    } catch (error) {
+        console.error("Supabase hatası:", error.message);
+        bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row" style="color:red;">Veri yüklenirken hata oluştu!</td></tr>`;
+    }
+}
     </script>
 </body>
 </html>
