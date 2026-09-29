@@ -489,25 +489,26 @@ async function veriGetir() {
     }
 }
 
-    document.addEventListener("DOMContentLoaded", function() {
-    // 1. Tablonun gövdesindeki (tbody) tüm satırları seçiyoruz
-    const satirlar = document.querySelectorAll("#kaynakTablo tbody tr");
-    // Değerin yazılacağı 2. tablonun ilk satırındaki hücreyi seçiyoruz
-    const hedefHujre = document.getElementById("hedefHujre");
+  // Dinamik olarak sonradan yüklenen (Supabase gibi) tablolarda tıklamayı kaçırmamak için 
+// tıklama olayını doğrudan 'tbody' alanına bağlıyoruz (Event Delegation).
+document.getElementById("supabaseTableBody").addEventListener("click", function(event) {
+    // Tıklanan elementin bir satır (tr) veya satırın içindeki bir hücre (td) olup olmadığını kontrol ediyoruz
+    const satir = event.target.closest("tr");
+    
+    // Eğer tıklanan yer geçerli bir satırsa ve "Veriler bekleniyor..." gibi bir durum satırı değilse işleme al
+    if (satir && !satir.querySelector(".status-row")) {
+        
+        // Satırın 0. indeksindeki (en baştaki "No") hücrenin metnini alıyoruz
+        const anaNo = satir.cells[0].innerText;
+        
+        // 2. tablodaki hedef hücreye bu No değerini yazdırıyoruz
+        document.getElementById("hedefHujre").innerText = anaNo;
 
-    satirlar.forEach(satir => {
-        satir.addEventListener("click", function() {
-            // Tıklanan satırın ilk hücrelerini (ilk td yani ANA_NO) alıyoruz
-            const anaNo = this.cells[0].innerText;
-            
-            // 2. tablonun hedef hücre alanına bu değeri yazıyoruz
-            hedefHujre.innerText = anaNo;
-
-            // Görsel geri bildirim için tıklanan satırı hafifçe renklendirebilirsiniz (İsteğe bağlı)
-            satirlar.forEach(s => s.style.backgroundColor = ""); // Öncekileri temizle
-            this.style.backgroundColor = "#e0f7fa"; // Yeni seçileni boya
-        });
-    });
+        // İsteğe bağlı: Tıklanan satırı renklendirme
+        const tumSatirlar = this.querySelectorAll("tr");
+        tumSatirlar.forEach(s => s.style.backgroundColor = ""); // Eski renkleri temizle
+        satir.style.backgroundColor = "#e0f7fa"; // Yeni satırı boya
+    }
 });
     </script>
 </body>
