@@ -508,7 +508,6 @@ async function bilesenVerileriniGetir(anaNoDegeri) {
     const bilesenBody = document.getElementById("bileşenTableBody");
 
     try {
-        // Gelen metni tam sayıya (INTEGER) çeviriyoruz (Çünkü veritabanınızda integer demiştiniz)
         const sayisalAnaNo = parseInt(anaNoDegeri, 10);
 
         if (isNaN(sayisalAnaNo)) {
@@ -516,11 +515,10 @@ async function bilesenVerileriniGetir(anaNoDegeri) {
             return;
         }
 
-        // 1. Sizin yapınızda dinamik URL oluşturuyoruz (ana_comp_table tablosundan sadece COMP ve DEGER sütunları)
-        // ANA_NO filtresini 'eq' (equals) kullanarak ekliyoruz
-        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select=COMP,DEGER&ANA_NO=eq.${sayisalAnaNo}`;
+        // SUPABASE BÜYÜK HARF KORUMASI İÇİN URL YAPISINI GÜNCELLEDİK
+        // Sütun isimlerinin başına ve sonuna %22 (çift tırnak) ekledik
+        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select=%22COMP%22,%22DEGER%22&%22ANA_NO%22=eq.${sayisalAnaNo}`;
 
-        // 2. Tıpkı yukarıdaki kodunuz gibi Header tanımlamalarıyla HTTP isteği atıyoruz
         const response = await fetch(apiTargetUrl, {
             method: "GET",
             headers: {
@@ -536,19 +534,22 @@ async function bilesenVerileriniGetir(anaNoDegeri) {
 
         const data = await response.json();
 
-        // Eğer veritabanında bu ANA_NO'ya ait hiçbir bileşen kaydı yoksa
         if (!data || data.length === 0) {
             bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Bu numara için bileşen verisi bulunamadı.</td></tr>`;
             return;
         }
 
-        // Tabloyu temizle ve gelen tüm COMP & DEGER verilerini döngüyle alt alta yazdır
+        // Tabloyu temizle ve gelen verileri büyük harfle oku (satir.COMP, satir.DEGER)
         bilesenBody.innerHTML = "";
         data.forEach(satir => {
+            // float8 formatındaki uzun ondalıklı sayıları (Örn: 0.025699999) 
+            // daha düzgün göstermek için virgülden sonra en fazla 4 basamakla sınırlıyoruz
+            const duzgunDeger = satir.DEGER ? Number(satir.DEGER).toFixed(4) : "0";
+
             const yeniSatir = `
                 <tr>
                     <td>${satir.COMP}</td>
-                    <td>% ${satir.DEGER}</td>
+                    <td>% ${duzgunDeger}</td>
                 </tr>
             `;
             bilesenBody.insertAdjacentHTML('beforeend', yeniSatir);
