@@ -504,7 +504,59 @@ document.getElementById("supabaseTableBody").addEventListener("click", async fun
 });
 
 // Sizin projenizin altyapısına (Fetch API) uygun hale getirilmiş sorgu fonksiyonu
+async function bilesenVerileriniGetir(anaNoDegeri) {
+    const bilesenBody = document.getElementById("bileşenTableBody");
 
+    try {
+        const sayisalAnaNo = parseInt(anaNoDegeri, 10);
+
+        if (isNaN(sayisalAnaNo)) {
+            bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row" style="color:orange;">Geçersiz sayısal ANA_NO!</td></tr>`;
+            return;
+        }
+
+        // Tırnak korumalı güncel URL şablonu
+        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select="COMP","DEGER"&"ANA_NO"=eq.${sayisalAnaNo}`;
+
+        const response = await fetch(apiTargetUrl, {
+            method: "GET",
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Bağlantı Hatası: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data || data.length === 0) {
+            bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Bu numara için bileşen verisi bulunamadı.</td></tr>`;
+            return;
+        }
+
+        // Tabloyu temizle ve gelen verileri bas
+        bilesenBody.innerHTML = "";
+        data.forEach(satir => {
+            const duzgunDeger = satir.DEGER ? Number(satir.DEGER).toFixed(4) : "0";
+
+            const yeniSatir = `
+                <tr>
+                    <td>${satir.COMP}</td>
+                    <td>% ${duzgunDeger}</td>
+                </tr>
+            `;
+            bilesenBody.insertAdjacentHTML('beforeend', yeniSatir);
+        });
+
+    } catch (error) {
+        console.error("Supabase API Hatası:", error.message);
+        bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row" style="color:red;">Veri yüklenirken hata oluştu!</td></tr>`;
+    }
+}
     </script>
 </body>
 </html>
