@@ -480,26 +480,7 @@ async function veriGetir() {
     }
 }
 
-  // Dinamik olarak sonradan yüklenen (Supabase gibi) tablolarda tıklamayı kaçırmamak için 
-// tıklama olayını doğrudan 'tbody' alanına bağlıyoruz (Event Delegation).
-document.getElementById("supabaseTableBody").addEventListener("click", function(event) {
-    // Tıklanan elementin bir satır (tr) veya satırın içindeki bir hücre (td) olup olmadığını kontrol ediyoruz
-    const satir = event.target.closest("tr");
-    
-    // Eğer tıklanan yer geçerli bir satırsa ve "Veriler bekleniyor..." gibi bir durum satırı değilse işleme al
-    if (satir && !satir.querySelector(".status-row")) {
-        
-        // Satırın 0. indeksindeki (en baştaki "No") hücrenin metnini alıyoruz
-        const anaNo = satir.cells[0].innerText;
-        
-       // İsteğe bağlı: Tıklanan satırı renklendirme
-        const tumSatirlar = this.querySelectorAll("tr");
-        tumSatirlar.forEach(s => s.style.backgroundColor = ""); // Eski renkleri temizle
-        satir.style.backgroundColor = "#e0f7fa"; // Yeni satırı boya
-    }
-});
-
-    document.getElementById("supabaseTableBody").addEventListener("click", async function(event) {
+document.getElementById("supabaseTableBody").addEventListener("click", async function(event) {
     const satir = event.target.closest("tr");
     
     // Satır geçerliyse ve "Veriler bekleniyor..." satırı değilse işleme al
@@ -515,40 +496,53 @@ document.getElementById("supabaseTableBody").addEventListener("click", function(
 
         // İkinci tabloyu yükleniyor durumuna getir
         const bilesenBody = document.getElementById("bileşenTableBody");
-        bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Veriler çekiliyor (${secilenAnaNo})...</td></tr>`;
+        bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Veriler çekiliyor (No: ${secilenAnaNo})...</td></tr>`;
 
-        // Supabase sorgu fonksiyonunu tetikle
+        // Sizin fetch yapınızla uyumlu sorgu fonksiyonunu tetikle
         await bilesenVerileriniGetir(secilenAnaNo);
     }
 });
 
-// Supabase'den COMP ve DEGER verilerini çeken fonksiyon
+// Sizin projenizin altyapısına (Fetch API) uygun hale getirilmiş sorgu fonksiyonu
 async function bilesenVerileriniGetir(anaNoDegeri) {
     const bilesenBody = document.getElementById("bileşenTableBody");
 
     try {
-        // GELEN METNİ TAM SAYIYA (INTEGER) ÇEVİRİYORUZ
+        // Gelen metni tam sayıya (INTEGER) çeviriyoruz (Çünkü veritabanınızda integer demiştiniz)
         const sayisalAnaNo = parseInt(anaNoDegeri, 10);
 
-        // Eğer dönüştürme başarısız olursa (sayı yerine harf geldiyse) durdur
         if (isNaN(sayisalAnaNo)) {
             bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row" style="color:orange;">Geçersiz sayısal ANA_NO!</td></tr>`;
             return;
         }
 
-        // Sorguyu sayısal değerle gönderiyoruz
-        const { data, error } = await supabase
-            .from('ana_comp_table')
-            .select('COMP, DEGER')
-            .eq('ANA_NO', sayisalAnaNo); // Güncellendi
+        // 1. Sizin yapınızda dinamik URL oluşturuyoruz (ana_comp_table tablosundan sadece COMP ve DEGER sütunları)
+        // ANA_NO filtresini 'eq' (equals) kullanarak ekliyoruz
+        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select=COMP,DEGER&ANA_NO=eq.${sayisalAnaNo}`;
 
-        if (error) throw error;
+        // 2. Tıpkı yukarıdaki kodunuz gibi Header tanımlamalarıyla HTTP isteği atıyoruz
+        const response = await fetch(apiTargetUrl, {
+            method: "GET",
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
 
+        if (!response.ok) {
+            throw new Error(`HTTP Bağlantı Hatası: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Eğer veritabanında bu ANA_NO'ya ait hiçbir bileşen kaydı yoksa
         if (!data || data.length === 0) {
             bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Bu numara için bileşen verisi bulunamadı.</td></tr>`;
             return;
         }
 
+        // Tabloyu temizle ve gelen tüm COMP & DEGER verilerini döngüyle alt alta yazdır
         bilesenBody.innerHTML = "";
         data.forEach(satir => {
             const yeniSatir = `
@@ -561,7 +555,7 @@ async function bilesenVerileriniGetir(anaNoDegeri) {
         });
 
     } catch (error) {
-        console.error("Supabase hatası:", error.message);
+        console.error("Supabase API Hatası:", error.message);
         bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row" style="color:red;">Veri yüklenirken hata oluştu!</td></tr>`;
     }
 }
