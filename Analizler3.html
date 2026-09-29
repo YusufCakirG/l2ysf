@@ -316,6 +316,14 @@
     </div>
 
 </div>
+    <!-- En büyük ANA_NO değerini getiren buton ve sonuç alanı -->
+<button id="btnEnBuyukAnaNo" onclick="enBuyukAnaNoGetir()" style="background-color: #28a745; color: white; padding: 10px 15px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">
+    📊 En Büyük ANA_NO Getir
+</button>
+
+<div id="sonucAlani" style="margin-top: 15px; font-size: 16px; font-weight: bold; color: #333;">
+    En Büyük ANA_NO: <span id="txtAnaNo">-</span>
+</div>
 
 <script>
     // ------ VERİTABANI AYARLARI ------
@@ -341,7 +349,52 @@
             veriGetir();
         });
     });
+async function enBuyukAnaNoGetir() {
+    const txtAnaNo = document.getElementById('txtAnaNo');
+    txtAnaNo.innerText = "Yükleniyor...";
+    txtAnaNo.style.color = "orange";
 
+    // Supabase URL Yapısı: ANA_NO'ya göre AZALAN sırala (desc) ve sadece 1 kayıt getir (limit=1)
+    const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
+    const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}${sorguParametreleri}`;
+
+    try {
+        const response = await fetch(apiTargetUrl, {
+            method: "GET",
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Sunucu Hatası: ${response.status}`);
+        }
+
+        const veriler = await response.json();
+
+        // Veri tabanında hiç kayıt yoksa dizi boş döner
+        if (veriler.length === 0) {
+            txtAnaNo.innerText = "Tabloda hiç kayıt bulunamadı.";
+            txtAnaNo.style.color = "red";
+            return;
+        }
+
+        // En büyük değer listenin ilk elemanıdır
+        const enBuyukAnaNo = veriler[0].ANA_NO;
+        
+        // Ekrana yazdırma
+        txtAnaNo.innerText = enBuyukAnaNo;
+        txtAnaNo.style.color = "#28a745"; // Yeşil renk
+        console.log("En Büyük ANA_NO Başarıyla Çekildi:", enBuyukAnaNo);
+
+    } catch (error) {
+        console.error("En büyük ANA_NO çekilirken hata oluştu:", error);
+        txtAnaNo.innerText = "Hata oluştu! Konsolu (F12) kontrol edin.";
+        txtAnaNo.style.color = "red";
+    }
+}
     async function veriGetir() {
         const tableBody = document.getElementById('supabaseTableBody');
         tableBody.innerHTML = '<tr><td colspan="6" class="status-row">Veritabanından güncel kayıtlar çekiliyor...</td></tr>';
