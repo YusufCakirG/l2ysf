@@ -530,21 +530,28 @@ async function bilesenVerileriniGetir(anaNoDegeri) {
     const bilesenBody = document.getElementById("bileşenTableBody");
 
     try {
-        // ana_comp_table tablosundan COMP ve DEGER sütunlarını ANA_NO filtresiyle çekiyoruz
+        // GELEN METNİ TAM SAYIYA (INTEGER) ÇEVİRİYORUZ
+        const sayisalAnaNo = parseInt(anaNoDegeri, 10);
+
+        // Eğer dönüştürme başarısız olursa (sayı yerine harf geldiyse) durdur
+        if (isNaN(sayisalAnaNo)) {
+            bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row" style="color:orange;">Geçersiz sayısal ANA_NO!</td></tr>`;
+            return;
+        }
+
+        // Sorguyu sayısal değerle gönderiyoruz
         const { data, error } = await supabase
             .from('ana_comp_table')
             .select('COMP, DEGER')
-            .eq('ANA_NO', anaNoDegeri);
+            .eq('ANA_NO', sayisalAnaNo); // Güncellendi
 
         if (error) throw error;
 
-        // Eğer veritabanında bu ANA_NO'ya ait hiçbir bileşen kaydı yoksa
         if (!data || data.length === 0) {
             bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Bu numara için bileşen verisi bulunamadı.</td></tr>`;
             return;
         }
 
-        // Tabloyu temizle ve gelen tüm COMP & DEGER verilerini döngüyle alt alta yazdır
         bilesenBody.innerHTML = "";
         data.forEach(satir => {
             const yeniSatir = `
