@@ -325,15 +325,15 @@
     En Büyük ANA_NO: <span id="txtAnaNo">-</span>
 </div>
 
+<!-- JAVASCRIPT MOTORU -->
 <script>
     // ------ VERİTABANI AYARLARI ------
-    const SUPABASE_URL = "https://ywwxiniqgfqrienlybba.supabase.co"; 
+    const SUPABASE_URL = "https://supabase.co"; 
     const SUPABASE_ANON_KEY = "sb_publishable_lkEsztjwQR4Md4kvs7JXmw_2kkTxc2Z";
     const TABLO_ADI = "analyses_tbl"; 
 
-    // Sayfa Yüklendiğinde Çalışacak Fonksiyonlar
+    // Sayfa Yüklendiğinde Otomatik Çalışacak Bölüm
     document.addEventListener('DOMContentLoaded', () => {
-        // Bugünün tarihini otomatik ata
         const dateInput = document.getElementById('uretimGunu');
         if (dateInput) {
             const today = new Date();
@@ -343,10 +343,10 @@
             dateInput.value = `${year}-${month}-${day}`;
         }
 
-        // İlk açılışta verileri otomatik çek
+        // İlk açılışta bugünün verilerini çek
         veriGetir();
 
-        // Sorgula butonu tetikleyici
+        // Sorgula butonu tetikleyicisi
         const btnSorgula = document.getElementById('btnSorgula');
         if (btnSorgula) {
             btnSorgula.addEventListener('click', () => {
@@ -355,13 +355,13 @@
         }
     });
 
-    // 1. FONKSİYON: En Büyük ANA_NO Değerini Getiren Buton Kodları
+    // 1. ÖZEL İŞLEV: En Büyük ANA_NO Değerini Çeken Fonksiyon
     async function enBuyukAnaNoGetir() {
         const txtAnaNo = document.getElementById('txtAnaNo');
         if (!txtAnaNo) return;
         
-        txtAnaNo.innerText = "Yükleniyor...";
-        txtAnaNo.style.color = "orange";
+        txtAnaNo.innerText = "Sorgulanıyor...";
+        txtAnaNo.style.color = "#f59e0b"; // Turuncu
 
         const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
         const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}${sorguParametreleri}`;
@@ -377,32 +377,32 @@
             });
 
             if (!response.ok) {
-                throw new Error(`Sunucu Hatası: ${response.status}`);
+                throw new Error(`Bağlantı Hatası: ${response.status}`);
             }
 
             const veriler = await response.json();
 
             if (!veriler || veriler.length === 0) {
-                txtAnaNo.innerText = "Tabloda hiç kayıt bulunamadı.";
-                txtAnaNo.style.color = "red";
+                txtAnaNo.innerText = "Kayıt yok.";
+                txtAnaNo.style.color = "#dc2626";
                 return;
             }
 
-            // En büyük değer listenin ilk elemanının içindedir
+            // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
             const enBuyukAnaNo = veriler[0].ANA_NO;
             
             txtAnaNo.innerText = enBuyukAnaNo;
-            txtAnaNo.style.color = "#28a745"; 
-            console.log("En Büyük ANA_NO Başarıyla Çekildi:", enBuyukAnaNo);
+            txtAnaNo.style.color = "#28a745"; // Başarılı yeşil
+            console.log("En yüksek ANA_NO başarıyla alındı:", enBuyukAnaNo);
 
         } catch (error) {
-            console.error("En büyük ANA_NO çekilirken hata oluştu:", error);
+            console.error("Buton işlem hatası:", error);
             txtAnaNo.innerText = "Hata oluştu!";
-            txtAnaNo.style.color = "red";
+            txtAnaNo.style.color = "#dc2626"; // Kırmızı
         }
-    } // <-- UNUTULAN KAPATMA PARANTEZİ BURAYA EKLENDİ
+    }
 
-    // 2. FONKSİYON: Ana Tabloya Verileri Çeken Kodlar
+    // 2. ANA İŞLEV: Veritabanından Verileri Filtreleyip Tabloya Basan Fonksiyon
     async function veriGetir() {
         const tableBody = document.getElementById('supabaseTableBody');
         if (!tableBody) return;
@@ -430,27 +430,26 @@
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP Hata Kodu: ${response.status}`);
+                throw new Error(`HTTP Bağlantı Hatası: ${response.status}`);
             }
 
             let data = await response.json();
 
-            // 1. Tarih Süzgeci (ANA_DATE)
+            // Kriter 1: Tarih Filtreleme (ANA_DATE)
             if (secilenTarih) {
                 data = data.filter(item => item.ANA_DATE && item.ANA_DATE.startsWith(secilenTarih));
             }
             
-            // 2. Konum Süzgeci (LOCAT)
+            // Kriter 2: Konum Filtreleme (LOCAT)
             if (secilenKonum !== 'ALL') {
                 data = data.filter(item => item.LOCAT === secilenKonum);
             }
             
-            // 3. Döküm No Süzgeci (HT_NO)
+            // Kriter 3: Döküm No Filtreleme (HT_NO)
             if (girilenDokumNo !== '') {
                 data = data.filter(item => item.HT_NO && String(item.HT_NO).toLowerCase().includes(girilenDokumNo.toLowerCase()));
             }
 
-            // Tabloyu tamamen temizle ve verileri yazdır
             tableBody.innerHTML = '';
             
             if (data.length === 0) {
@@ -458,7 +457,7 @@
                 return;
             }
 
-            // Tablo satırlarını oluştur
+            // Verileri döngüyle HTML tablosuna basma
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 const formatliTarih = item.ANA_DATE ? new Date(item.ANA_DATE).toLocaleString('tr-TR') : '';
@@ -474,8 +473,10 @@
             });
 
         } catch (error) {
-            console.error("Hata detayı:", error);
+            console.error("Tablo yükleme hatası:", error);
             tableBody.innerHTML = "<tr><td colspan='6' class='status-row' style='color: #dc2626; font-weight: 600;'>Veri yükleme hatası: " + error.message + "</td></tr>";
         }
     }
 </script>
+</body>
+</html>
