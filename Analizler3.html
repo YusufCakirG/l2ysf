@@ -440,6 +440,9 @@ async function veriGetir() {
             const temizKonum = secilenKonum.trim();
             apiTargetUrl += `&LOCAT=ilike.*${temizKonum}*`;
         }
+
+        // [YENİ] Sıralama Filtresi: Verileri ANA_NO'ya göre azalan (descending) sıralar
+        apiTargetUrl += `&order=ANA_NO.desc`;
                      
        const response = await fetch(apiTargetUrl, {
             method: "GET",
