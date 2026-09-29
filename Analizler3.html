@@ -403,104 +403,86 @@
         }
     }
 
-    // 2. ANA İŞLEV: Veritabanından Verileri Filtreleyip Tabloya Basan Fonksiyon
-    async function veriGetir() {
-        const tableBody = document.getElementById('supabaseTableBody');
-        if (!tableBody) return;
+async function veriGetir() {
+    const tableBody = document.getElementById('supabaseTableBody');
+    if (!tableBody) return;
+    
+    tableBody.innerHTML = '<tr><td colspan="6" class="status-row">Veritabanından güncel kayıtlar çekiliyor...</td></tr>';
+    
+    const uretimGunuInput = document.getElementById('uretimGunu');
+    const konumInput = document.getElementById('konum');
+    const dokumNoInput = document.getElementById('dokumNo');
+
+    const secilenTarih = uretimGunuInput ? uretimGunuInput.value : '';
+    const secilenKonum = konumInput ? konumInput.value : 'ALL';
+    const girilenDokumNo = dokumNoInput ? dokumNoInput.value.trim() : '';
+
+    try {
+        // 1. Temel API URL'ini oluşturuyoruz
+        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}?select=*`;
         
-        tableBody.innerHTML = '<tr><td colspan="6" class="status-row">Veritabanından güncel kayıtlar çekiliyor...</td></tr>';
+        // 2. SUNUCU TARAFLI FİLTRELEME (Supabase URL parametreleri ekleme)
         
-        const uretimGunuInput = document.getElementById('uretimGunu');
-        const konumInput = document.getElementById('konum');
-        const dokumNoInput = document.getElementById('dokumNo');
-
-        const secilenTarih = uretimGunuInput ? uretimGunuInput.value : '';
-        const secilenKonum = konumInput ? konumInput.value : 'ALL';
-        const girilenDokumNo = dokumNoInput ? dokumNoInput.value.trim() : '';
-
-        try {
-            const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}?select=*`;
-            
-            const response = await fetch(apiTargetUrl, {
-                method: "GET",
-                headers: {
-                    "apikey": SUPABASE_ANON_KEY,
-                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-                    "Content-Type": "application/json"
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP Bağlantı Hatası: ${response.status}`);
-            }
-
-            let data = await response.json();
-
-            // 1. Tarih Süzgeci (Zaman Damgasını ISO Biçimine Çevirerek Eşleştirir)
-            if (secilenTarih) {
-                data = data.filter(item => {
-                    if (!item.ANA_DATE) return false;
-                    
-                    // Supabase'den gelen timestamp değerini gerçek bir Javascript Date nesnesine çeviriyoruz
-                    const tarihNesnesi = new Date(item.ANA_DATE);
-                    
-                    // Geçersiz bir tarih gelirse filtre dışı bırakır
-                    if (isNaN(tarihNesnesi.getTime())) return false;
-                    
-                    // Tarihi YYYY-MM-DD (Örn: 2026-09-29) formatına dönüştürür
-                    const dbTarihFormati = tarihNesnesi.toISOString().split('T')[0];
-                    
-                    return dbTarihFormati === secilenTarih;
-                });
-            }
-            
-            // 2. Konum Süzgeci (Arayüzdeki Türkçe isimler ile Veritabanındaki Kodları Eşleştirir)
-            if (secilenKonum && secilenKonum !== 'ALL') {
-                data = data.filter(item => {
-                    if (!item.LOCAT) return false;
-                    
-                    const veritabanindakiKonum = String(item.LOCAT).trim().toUpperCase();
-                    const secilenArayuzKonumu = String(secilenKonum).trim().toUpperCase();
-                    
-                    // Eğer arayüzden seçilen değer (örn: DESU) veritabanındakiyle (örn: DESU) uyuşuyorsa veya içeriyorsa
-                    return veritabanindakiKonum.includes(secilenArayuzKonumu) || secilenArayuzKonumu.includes(veritabanindakiKonum);
-                });
-            }
-            
-            // Kriter 3: Döküm No Filtreleme (HT_NO)
-            if (girilenDokumNo !== '') {
-                data = data.filter(item => item.HT_NO && String(item.HT_NO).toLowerCase().includes(girilenDokumNo.toLowerCase()));
-            }
-  // Filtrelerden sonra elimizde kalan veriyi konsola yazdırıp kontrol edelim:
-            console.log("Filtreleme Sonrası Kalan Veri Sayısı:", data.length);
-            console.log("Tabloya Yazılacak Veriler:", data);
-            tableBody.innerHTML = '';
-            
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="status-row">Seçilen kriterlere uygun hiçbir veri bulunamadı.</td></tr>';
-                return;
-            }
-
-            // Verileri döngüyle HTML tablosuna basma
-            data.forEach(item => {
-                const tr = document.createElement('tr');
-                const formatliTarih = item.ANA_DATE ? new Date(item.ANA_DATE).toLocaleString('tr-TR') : '';
-                tr.innerHTML = `
-                    <td>${item.ANA_NO ?? ''}</td>
-                    <td>${item.HT_NO ?? ''}</td>
-                    <td>${item.SMP_NO ?? ''}</td>
-                    <td>${item.LOCAT ?? ''}</td>
-                    <td>${item.DESCR ?? ''}</td>
-                    <td>${formatliTarih}</td>
-                `;
-                tableBody.appendChild(tr);
-            });
-
-        } catch (error) {
-            console.error("Tablo yükleme hatası:", error);
-                      tableBody.innerHTML = "<tr><td colspan='6' class='status-row' style='color: #dc2626; font-weight: 600;'>Veri yükleme hatası: " + error.message + "</td></tr>";
+        // Tarih Filtresi: Seçilen günün başlangıcı (00:00:00) ve bitişi (23:59:59) arasını sorgular
+        if (secilenTarih) {
+            apiTargetUrl += `&ANA_DATE=gte.${secilenTarih}T00:00:00&ANA_DATE=lte.${secilenTarih}T23:59:59`;
         }
+        
+        // Konum Filtresi: Supabase 'ilike' ile büyük/küçük harf duyarsız kısmi eşleşme yapar
+        if (secilenKonum && secilenKonum !== 'ALL') {
+            const temizKonum = secilenKonum.trim();
+            apiTargetUrl += `&LOCAT=ilike.*${temizKonum}*`;
+        }
+        
+        // Döküm No Filtresi: Büyük/küçük harf duyarsız kısmi arama
+        if (girilenDokumNo !== '') {
+            apiTargetUrl += `&HT_NO=ilike.*${girilenDokumNo}*`;
+        }
+
+        const response = await fetch(apiTargetUrl, {
+            method: "GET",
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Bağlantı Hatası: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log("Gelen Veri Sayısı (Sunucudan Filtrelenmiş):", data.length);
+        console.log("Tabloya Yazılacak Veriler:", data);
+        tableBody.innerHTML = '';
+        
+        if (data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="status-row">Seçilen kriterlere uygun hiçbir veri bulunamadı.</td></tr>';
+            return;
+        }
+
+        // Verileri döngüyle HTML tablosuna basma
+        data.forEach(item => {
+            const tr = document.createElement('tr');
+            const formatliTarih = item.ANA_DATE ? new Date(item.ANA_DATE).toLocaleString('tr-TR') : '';
+            tr.innerHTML = `
+                <td>${item.ANA_NO ?? ''}</td>
+                <td>${item.HT_NO ?? ''}</td>
+                <td>${item.SMP_NO ?? ''}</td>
+                <td>${item.LOCAT ?? ''}</td>
+                <td>${item.DESCR ?? ''}</td>
+                <td>${formatliTarih}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+
+    } catch (error) {
+        console.error("Tablo yükleme hatası:", error);
+        tableBody.innerHTML = "<tr><td colspan='6' class='status-row' style='color: #dc2626; font-weight: 600;'>Veri yükleme hatası: " + error.message + "</td></tr>";
     }
+}
 </script>
 </body>
 </html>
