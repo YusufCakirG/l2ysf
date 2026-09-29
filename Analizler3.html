@@ -398,32 +398,37 @@ async function enBuyukAnaNoGetir() {
     async function veriGetir() {
         const tableBody = document.getElementById('supabaseTableBody');
         tableBody.innerHTML = '<tr><td colspan="6" class="status-row">Veritabanından güncel kayıtlar çekiliyor...</td></tr>';
+const secilenTarih = document.getElementById('uretimGunu').value;
+const secilenKonum = document.getElementById('konum').value;
+const girilenDokumNo = document.getElementById('dokumNo').value.trim();
 
-        const secilenTarih = document.getElementById('uretimGunu').value; 
-        const secilenKonum = document.getElementById('konum').value;
-        const girilenDokumNo = document.getElementById('dokumNo').value.trim();
+try {
+    // 1. Doğru ters tırnaklar ile URL tanımlama
+    const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}?select=*`;
+    
+    // 2. Parantez yapısı tamamen düzeltilmiş Fetch isteği
+    const response = await fetch(apiTargetUrl, {
+        method: "GET",
+        headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+            "Content-Type": "application/json"
+        }
+    });
 
-        try {
-// Hiçbir harici JS kütüphanesine ihtiyaç duymayan doğrudan REST API URL'si
-const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}?select=*`;
-const response = await fetch(apiTargetUrl, {
-method: "GET",
-headers: {
-  "apikey": SUPABASE_ANON_KEY,
-  "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-  "Content-Type": "application/json"
-}
-});
-if (!response.ok) {
-const errData = await response.json().catch(() => ({ message: "Bilinmeyen API Hatası" }));
-throw new Error(errData.message || HTTP Hata Kodu: ${response.status});
-}
-let data = await response.json();
-// SÜZME VE FILTRELEME ADIMLARI
-// 1. Tarih Süzgeci (ANA_DATE)
-if (secilenTarih) {
-data = data.filter(item => item.ANA_DATE && item.ANA_DATE.startsWith(secilenTarih));
-}
+    // 3. Hata kontrolü ve düzeltilmiş ters tırnaklar
+    if (!response.ok) {
+        throw new Error(`HTTP Hata Kodu: ${response.status}`);
+    }
+
+    // 4. Veriyi sadece BİR KERE çekiyoruz
+    let data = await response.json();
+
+    // // SÜZME ve FİLTRELEME ADIMLARI (Aşağıdaki filtre kodlarınız aynen devam edebilir)
+    // 1. Tarih Süzgeci (ANA_DATE)
+    if (secilenTarih) {
+        data = data.filter(item => item.ANA_DATE && item.ANA_DATE.startsWith(secilenTarih));
+    }
 // 2. Konum Süzgeci (LOCAT)
 if (secilenKonum !== 'ALL') {
 data = data.filter(item => item.LOCAT === secilenKonum);
