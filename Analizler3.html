@@ -258,68 +258,68 @@
         </div>
     </div>
 
-    <!-- Yan Yana Tablolar <a href="index.html" class="btn btn-anasayfa">Anasayfa</a>  -->
-    <div class="tables-wrapper">
-        
-        <!-- 1. Tablo (Dinamik Veri Alanı) -->
-        <div class="table-container table-main">
-            <table>
-                <colgroup>
-                    <col class="col-std">
-                    <col class="col-std">
-                    <col class="col-std">
-                    <col class="col-std">
-                    <col class="col-wide">
-                    <col class="col-wide">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Döküm No</th>
-                        <th>Smp.No</th>
-                        <th>Konum</th>
-                        <th>Açıklama</th>
-                        <th>Tarih</th>
-                    </tr>
-                </thead>
-                <tbody id="supabaseTableBody">
-                    <tr>
-                        <td colspan="6" class="status-row">Veriler bekleniyor...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<!-- 2. Tablonun ilk satırına id="hedefHujre" eklenmiş hali (Sadece burayı güncelledik) -->
+<!-- Yan Yana Tablolar <a href="index.html" class="btn btn-anasayfa">Anasayfa</a>  -->
+<div class="tables-wrapper">
+    
+    <!-- 1. Tablo (Dinamik Veri Alanı) -->
+    <div class="table-container table-main">
+        <table>
+            <colgroup>
+                <col class="col-std">
+                <col class="col-std">
+                <col class="col-std">
+                <col class="col-std">
+                <col class="col-wide">
+                <col class="col-wide">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Döküm No</th>
+                    <th>Smp.No</th>
+                    <th>Konum</th>
+                    <th>Açıklama</th>
+                    <th>Tarih</th>
+                </tr>
+            </thead>
+            <tbody id="supabaseTableBody">
+                <tr>
+                    <td colspan="6" class="status-row">Veriler bekleniyor...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-        <!-- 2. Tablo (Bileşen Bilgileri) -->
-        <div class="table-container table-side">
-            <table>
-                <colgroup>
-                    <col class="col-half">
-                    <col class="col-half">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>Bileşen</th>
-                        <th>Yüzde</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Demir (Fe)</td>
-                        <td>% 92.4</td>
-                    </tr>
-                    <tr>
-                        <td>Karbon (C)</td>
-                        <td>% 4.2</td>
-                    </tr>
-                    <tr>
-                        <td>Silisyum (Si)</td>
-                        <td>% 2.1</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
+    <!-- 2. Tablo (Bileşen Bilgileri) -->
+    <div class="table-container table-side">
+        <table>
+            <colgroup>
+                <col class="col-half">
+                <col class="col-half">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Bileşen</th>
+                    <th>Yüzde</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <!-- BURAYA id="hedefHujre" EKLEDİK: Tıklanan satırdaki 'No' değeri buraya yazılacak -->
+                    <td id="hedefHujre">Demir (Fe)</td>
+                    <td>% 92.4</td>
+                </tr>
+                <tr>
+                    <td>Karbon (C)</td>
+                    <td>% 4.2</td>
+                </tr>
+                <tr>
+                    <td>Silisyum (Si)</td>
+                    <td>% 2.1</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
@@ -488,6 +488,27 @@ async function veriGetir() {
         tableBody.innerHTML = "<tr><td colspan='6' class='status-row' style='color: #dc2626; font-weight: 600;'>Veri yükleme hatası: " + error.message + "</td></tr>";
     }
 }
-</script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+    // 1. Tablonun gövdesindeki (tbody) tüm satırları seçiyoruz
+    const satirlar = document.querySelectorAll("#kaynakTablo tbody tr");
+    // Değerin yazılacağı 2. tablonun ilk satırındaki hücreyi seçiyoruz
+    const hedefHujre = document.getElementById("hedefHujre");
+
+    satirlar.forEach(satir => {
+        satir.addEventListener("click", function() {
+            // Tıklanan satırın ilk hücrelerini (ilk td yani ANA_NO) alıyoruz
+            const anaNo = this.cells[0].innerText;
+            
+            // 2. tablonun hedef hücre alanına bu değeri yazıyoruz
+            hedefHujre.innerText = anaNo;
+
+            // Görsel geri bildirim için tıklanan satırı hafifçe renklendirebilirsiniz (İsteğe bağlı)
+            satirlar.forEach(s => s.style.backgroundColor = ""); // Öncekileri temizle
+            this.style.backgroundColor = "#e0f7fa"; // Yeni seçileni boya
+        });
+    });
+});
+    </script>
 </body>
 </html>
