@@ -364,9 +364,9 @@
         txtAnaNo.innerText = "Sorgulanıyor...";
         txtAnaNo.style.color = "#f59e0b"; // Turuncu
 
-        const sorguParametreleri = "?select=ANA_NO,HT_NO&order=ANA_NO.desc&limit=1";
-        const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}${sorguParametreleri}`;
-
+        const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
+       // const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}${sorguParametreleri}`;
+const apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri}`;
         try {
             const response = await fetch(apiTargetUrl, {
                 method: "GET",
@@ -391,11 +391,11 @@
 
             // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
             const enBuyukAnaNo = veriler[0].ANA_NO;
-             const enBuyukhtNo = veriler[0].HT_NO;
+            // const enBuyukhtNo = veriler[0].HT_NO;
             
             txtAnaNo.innerText = enBuyukAnaNo;
             txtAnaNo.style.color = "#28a745"; // Başarılı yeşil
-            console.log("En yüksek ANA_NO başarıyla alındı:", enBuyukAnaNo," / ",enBuyukhtNo);
+            console.log("En yüksek ANA_NO başarıyla alındı:", enBuyukAnaNo);
 
         } catch (error) {
             console.error("Buton işlem hatası:", error);
