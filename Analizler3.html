@@ -391,7 +391,7 @@
             // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
             const enBuyukAnaNo = veriler[0].ANA_NO;
                   
-            const sorguParametreleri1 = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
+            const sorguParametreleri1 = "?select=ANA_NO,COMP,DEGER&order=ANA_NO.desc&limit=1";
        
             const apiTargetUrl1 = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri}`;
            
@@ -418,11 +418,20 @@
 
             // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
             const enBuyukAnaNo2 = veriler1[0].ANA_NO;
+            const bilesen = veriler1[0].COMP;
+            const deger = veriler1[0].DEGER;
                       
             
             txtAnaNo.innerText = "En büyük : " + enBuyukAnaNo + " / " + enBuyukAnaNo2;
             txtAnaNo.style.color = "#28a745"; // Başarılı yeşil
             console.log("En yüksek ANA_NO başarıyla alındı:", enBuyukAnaNo, " / ", enBuyukAnaNo2);
+           const yeniSatir = `
+                <tr>
+                    <td>${bilesen}</td>
+                    <td>%${deger}</td>
+                </tr>
+            `;
+            bilesenBody.insertAdjacentHTML('beforeend', yeniSatir);
 
         } catch (error) {
             console.error("Buton işlem hatası:", error);
