@@ -139,8 +139,12 @@
             flex: 7;
         }
 
-        .table-side {
+         .table-side {
             flex: 3;
+            position: sticky;             /* Ekran kaydıkça sabit kalmasını sağlar */
+            top: 20px;                    /* Sayfa aşağı kayarken yukarıdan bırakacağı boşluk */
+            max-height: calc(100vh - 40px); /* Sayfadan taşarsa kendi içinde kaydırma çubuğu çıkarır */
+            overflow-y: auto;             /* max-height ile birlikte çalışması için şarttır */
         }
 
         table {
@@ -258,7 +262,6 @@
         </div>
     </div>
 
-<!-- 2. Tablonun ilk satırına id="hedefHujre" eklenmiş hali (Sadece burayı güncelledik) -->
 <!-- Yan Yana Tablolar <a href="index.html" class="btn btn-anasayfa">Anasayfa</a>  -->
 <div class="tables-wrapper">
     
