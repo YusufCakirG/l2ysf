@@ -519,7 +519,7 @@ async function bilesenVerileriniGetir(anaNoDegeri) {
         }
 
         // DÜZELTİLEN SATIR: Tırnak işaretleri kaldırıldı
-        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select=COMP,DEGER&ANA_NO=eq.${sayisalAnaNo}`;
+        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select=COMP,DEGER,ANA_NO&ANA_NO=eq.2169137`;
 
         const response = await fetch(apiTargetUrl, {
             method: "GET",
