@@ -359,6 +359,7 @@
     // 1. ÖZEL İŞLEV: En Büyük ANA_NO Değerini Çeken Fonksiyon
     async function enBuyukAnaNoGetir() {
         const txtAnaNo = document.getElementById('txtAnaNo');
+          const bilesenBody = document.getElementById("bileşenTableBody");
         if (!txtAnaNo) return;
         
         txtAnaNo.innerText = "Sorgulanıyor...";
