@@ -394,7 +394,7 @@
             const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
        
             const apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri}`;
-            try {
+           
             const response = await fetch(apiTargetUrl, {
                 method: "GET",
                 headers: {
