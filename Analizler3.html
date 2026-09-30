@@ -518,10 +518,8 @@ async function bilesenVerileriniGetir(anaNoDegeri) {
             return;
         }
 
-        // Tırnak korumalı güncel URL şablonu
-       // let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select="COMP","DEGER"&"ANA_NO"=eq.${sayisalAnaNo}`;
-        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select="COMP","DEGER"&"ANA_NO"=eq.2169137`;
-
+        // DÜZELTİLEN SATIR: Tırnak işaretleri kaldırıldı
+        let apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select=COMP,DEGER&ANA_NO=eq.${sayisalAnaNo}`;
 
         const response = await fetch(apiTargetUrl, {
             method: "GET",
@@ -546,7 +544,7 @@ async function bilesenVerileriniGetir(anaNoDegeri) {
         // Tabloyu temizle ve gelen verileri bas
         bilesenBody.innerHTML = "";
         data.forEach(satir => {
-            const duzgunDeger = satir.DEGER ? Number(satir.DEGER).toFixed(4) : "0";
+            const duzgunDeger = satir.DEGER ? Number(satir.DEGER).toFixed(4) : "0.0000";
 
             const yeniSatir = `
                 <tr>
