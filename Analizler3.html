@@ -365,8 +365,7 @@
         txtAnaNo.style.color = "#f59e0b"; // Turuncu
 
         const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
-       // const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}${sorguParametreleri}`;
-const apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri}`;
+       const apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}${sorguParametreleri}`;
         try {
             const response = await fetch(apiTargetUrl, {
                 method: "GET",
@@ -391,9 +390,37 @@ const apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri}`
 
             // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
             const enBuyukAnaNo = veriler[0].ANA_NO;
-            // const enBuyukhtNo = veriler[0].HT_NO;
+                  
+            const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
+       
+            const apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri}`;
+            try {
+            const response = await fetch(apiTargetUrl, {
+                method: "GET",
+                headers: {
+                    "apikey": SUPABASE_ANON_KEY,
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Bağlantı Hatası: ${response.status}`);
+            }
+
+            const veriler = await response.json();
+
+            if (!veriler || veriler.length === 0) {
+                txtAnaNo.innerText = "Kayıt yok.";
+                txtAnaNo.style.color = "#dc2626";
+                return;
+            }
+
+            // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
+            const enBuyukAnaNo2 = veriler[0].ANA_NO;
+                      
             
-            txtAnaNo.innerText = enBuyukAnaNo;
+            txtAnaNo.innerText = enBuyukAnaNo, " / ",enBuyukAnaNo2;
             txtAnaNo.style.color = "#28a745"; // Başarılı yeşil
             console.log("En yüksek ANA_NO başarıyla alındı:", enBuyukAnaNo);
 
