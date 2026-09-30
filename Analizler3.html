@@ -404,11 +404,11 @@
                 }
             });
 
-            if (!response.ok) {
-                throw new Error(`Bağlantı Hatası: ${response.status}`);
+            if (!response1.ok) {
+                throw new Error(`Bağlantı Hatası: ${response1.status}`);
             }
 
-            const veriler1 = await response.json();
+            const veriler1 = await response1.json();
 
             if (!veriler1 || veriler1.length === 0) {
                 txtAnaNo.innerText = "Kayıt yok.";
