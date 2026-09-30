@@ -392,7 +392,8 @@
             // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
             const enBuyukAnaNo = veriler[0].ANA_NO;
                   
-            const sorguParametreleri1 = "?select=ANA_NO,COMP,DEGER&order=ANA_NO.desc&limit=1";
+           // const sorguParametreleri1 = "?select=ANA_NO,COMP,DEGER&order=ANA_NO.desc&limit=1";
+            const sorguParametreleri1 = "?select=*&order=ANA_NO.desc&limit=1";
        
             const apiTargetUrl1 = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri}`;
            
