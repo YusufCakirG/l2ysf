@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Üretim Takip Paneli</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 830px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+           /* Üst Filtre ve Buton Alanı */
+        .filter-wrapper {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 15px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eef2f5;
+            flex-wrap: nowrap;
+        }
+
+        .inputs-container {
+            display: flex;
+            gap: 15px;
+            flex-grow: 1;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .input-group input, 
+        .input-group select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: #fff;
+            height: 35px;
+max-width: 100px; /* Kutuların alabileceği maksimum genişlik */
+   	width: 100%;  
+        }
+
+        .input-group input[type="date"],
+        .input-group select {
+            cursor: pointer;
+ 	max-width: 150px; /* Kutuların alabileceği maksimum genişlik */
+   	width: 100%;       /* Küçük ekranlarda taşmaması için flex yapıyı korur */
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+	 }
+
+        .buttons-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 2px;
+        }
+
+        .btn {
+            padding: 8px 10px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            height: 35px;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-sorgula {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .btn-sorgula:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-anasayfa {
+            background-color: #64748b;
+            color: white;
+        }
+
+        .btn-anasayfa:hover {
+            background-color: #475569;
+        }
+
+        /* Tablo Alanı */
+        .tables-wrapper {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+        }
+
+        .table-container {
+            background-color: #ffffff;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .table-main {
+            flex: 8;
+        }
+
+         .table-side {
+            flex: 2;
+            position: sticky;             /* Ekran kaydıkça sabit kalmasını sağlar */
+            top: 20px;                    /* Sayfa aşağı kayarken yukarıdan bırakacağı boşluk */
+            max-height: calc(100vh - 40px); /* Sayfadan taşarsa kendi içinde kaydırma çubuğu çıkarır */
+            overflow-y: auto;             /* max-height ile birlikte çalışması için şarttır */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 12px;
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: 5px 5px;
+	    line-height: 0.8; /* Yazı yüksekliğini sıkıştırır */
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+ 	
+
+        /* 3. SÜTUN: Komple Sola Dayalı */
+        .table-main tr th:nth-child(3),
+        .table-main tr td:nth-child(3) {
+            text-align: center;
+        }
+
+        th {
+            background-color: #1e293b;
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: #334155;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .status-row {
+            text-align: center;
+            font-style: italic;
+            color: #64748b;
+        }
+
+        .col-std { width: 12.5%; }
+        .col-wide { width: 25%; }
+        .col-half { width: 50%; }
+
+        @media (max-width: 992px) {
+            .tables-wrapper {
+                flex-direction: column;
+            }
+            .table-container {
+                width: 100%;
+            }
+            .filter-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .buttons-container {
+                justify-content: flex-end;
+                margin-top: 10px;
+            }
+            table {
+                table-layout: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Üst Kontrol Paneli -->
+    <div class="filter-wrapper">
+        <div class="inputs-container">
+            <div class="input-group">
+                <label for="uretimGunu">Üretim Günü</label>
+                <input type="date" id="uretimGunu">
+            </div>
+            
+            <div class="input-group">
+                <label for="konum">Konum</label>
+                <select id="konum">
+                    <option value="ALL" selected>Genel Analizler</option>
+                    <option value="DESU">DESU</option>
+                    <option value="CUK1">Çukur 1</option>
+                    <option value="CUK2">Çukur 2</option>
+                    <option value="CUK3">Çukur 3</option>
+                    <option value="KON1">Konverter 1</option>
+                    <option value="KON2">Konverter 2</option>
+                    <option value="KON3">Konverter 3</option>
+                    <option value="POTA">Pota Fırınları</option>
+                    <option value="VAKU">Vakum</option>
+                    <option value="KUT">SDM 1</option>
+                    <option value="BLUM">SDM 2</option>
+                    <option value="SDM3">SDM 3</option>
+                    <option value="SDM4">SDM 4</option>
+                    <option value="YF/1">Yüksek Fırın 1</option> 
+                    <option value="YF/4">Yüksek Fırın 4</option>
+                    <option value="YF/5">Yüksek Fırın 5</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="dokumNo">Döküm No</label>
+                <input type="text" id="dokumNo" placeholder="Örn: 2621234">
+            </div>
+        </div>
+        
+        <div class="buttons-container">
+            <button class="btn btn-sorgula" id="btnSorgula">Sorgula</button>
+          <a href="index.html">
+    <button class="btn btn-anasayfa">Anasayfa</button>
+</a>
+        </div>
+    </div>
+
+<!-- Yan Yana Tablolar <a href="index.html" class="btn btn-anasayfa">Anasayfa</a>  -->
+<div class="tables-wrapper">
+    
+    <!-- 1. Tablo (Dinamik Veri Alanı) -->
+    <div class="table-container table-main">
+        <table>
+            <colgroup>
+                <col class="col-std">
+                <col class="col-std">
+                <col class="col-narrow">
+                <col class="col-std">
+                <col class="col-std">
+                <col class="col-wide">
+            </colgroup>
+            <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Dök.No</th>
+                  <th>S.No</th>
+                  <th>Konum</th>
+                  <th>Açıklama</th>
+                  <th>Tarih</th>
+                </tr>
+            </thead>
+            <tbody id="supabaseTableBody">
+                <tr>
+                    <td colspan="6" class="status-row">Veriler bekleniyor...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 2. Tablo (Bileşen Bilgileri) -->
+   <div class="table-container table-side">
+    <table>
+        <colgroup>
+            <col class="col-std">
+            <col class="col-std">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Bileşen</th>
+                <th>Yüzde</th>
+            </tr>
+        </thead>
+        <!-- SADECE BURAYA id="bileşenTableBody" EKLEDİK -->
+        <tbody id="bileşenTableBody">
+            <tr>
+                <td colspan="2" class="status-row">Lütfen soldan bir satır seçin...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</div>
+    <!-- En büyük ANA_NO değerini getiren buton ve sonuç alanı -->
+<button id="btnEnBuyukAnaNo" onclick="enBuyukAnaNoGetir()" style="background-color: #28a745; color: white; padding: 10px 15px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">
+    📊 En Büyük ANA_NO Getir
+</button>
+
+<div id="sonucAlani" style="margin-top: 15px; font-size: 16px; font-weight: bold; color: #333;">
+    En Büyük ANA_NO: <span id="txtAnaNo">-</span>
+</div>
+
+<!-- JAVASCRIPT MOTORU -->
+<script>
+    // ------ VERİTABANI AYARLARI ------
+    const SUPABASE_URL = "https://ywwxiniqgfqrienlybba.supabase.co"; 
+    const SUPABASE_ANON_KEY = "sb_publishable_lkEsztjwQR4Md4kvs7JXmw_2kkTxc2Z";
+    const TABLO_ADI = "analyses_tbl"; 
+
+    // Sayfa Yüklendiğinde Otomatik Çalışacak Bölüm
+    document.addEventListener('DOMContentLoaded', () => {
+        const dateInput = document.getElementById('uretimGunu');
+        if (dateInput) {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${year}-${month}-${day}`;
+        }
+
+        // İlk açılışta bugünün verilerini çek
+        veriGetir();
+
+        // Sorgula butonu tetikleyicisi
+        const btnSorgula = document.getElementById('btnSorgula');
+        if (btnSorgula) {
+            btnSorgula.addEventListener('click', () => {
+                veriGetir();
+            });
+        }
+    });
+
+    // 1. ÖZEL İŞLEV: En Büyük ANA_NO Değerini Çeken Fonksiyon
+    async function enBuyukAnaNoGetir() {
+        const txtAnaNo = document.getElementById('txtAnaNo');
+          const bilesenBody = document.getElementById("bileşenTableBody");
+        if (!txtAnaNo) return;
+           txtAnaNo.innerText = "Sorgulanıyor...";
+        txtAnaNo.style.color = "#f59e0b"; // Turuncu
+
+        const sorguParametreleri = "?select=ANA_NO&order=ANA_NO.desc&limit=1";
+       const apiTargetUrl = `${SUPABASE_URL}/rest/v1/analyses_tbl${sorguParametreleri}`;
+        try {
+            const response = await fetch(apiTargetUrl, {
+                method: "GET",
+                headers: {
+                    "apikey": SUPABASE_ANON_KEY,
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Bağlantı Hatası: ${response.status}`);
+            }
+
+            const veriler = await response.json();
+
+            if (!veriler || veriler.length === 0) {
+                txtAnaNo.innerText = "Kayıt yok.";
+                txtAnaNo.style.color = "#dc2626";
+                return;
+            }
+
+            // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
+            const enBuyukAnaNo = veriler[0].ANA_NO;
+                  
+            const sorguParametreleri1 = "?select=*&order=ANA_NO.desc&limit=1";
+	//const sorguParametreleri1 = "?select=*&order=ANA_NO.desc&limit=1&COMP=eq.FE";
+	//const sorguParametreleri1 = "?select=*&ANA_NO=eq.2169137";
+     
+		
+            const apiTargetUrl1 = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri1}`;
+         
+            const response1 = await fetch(apiTargetUrl1, {
+                method: "GET",
+                headers: {
+                    "apikey": SUPABASE_ANON_KEY,
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response1.ok) {
+                throw new Error(`Bağlantı Hatası: ${response1.status}`);
+            }
+
+            const veriler1 = await response1.json();
+            console.log("Supabase'den Gelen Son 10 Satır:", veriler1);
+
+	
+            if (!veriler1 || veriler1.length === 0) {
+                txtAnaNo.innerText = "Kayıt yok.";
+                txtAnaNo.style.color = "#dc2626";
+                return;
+            }
+
+            // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
+            const enBuyukAnaNo2 = veriler1[0].ANA_NO;
+            const bilesen = veriler1[0].COMP;
+            const deger = veriler1[0].DEGER;
+                      
+            
+            txtAnaNo.innerText = "En büyük : " + enBuyukAnaNo + " / " + enBuyukAnaNo2;
+            txtAnaNo.style.color = "#28a745"; // Başarılı yeşil
+            console.log("En yüksek ANA_NO başarıyla alındı:", enBuyukAnaNo, " / ", enBuyukAnaNo2);
+   
+ 	bilesenBody.innerHTML = "";
+	veriler1.forEach((satir) => {
+	const formatliDeger = Number(satir.DEGER).toFixed(4).replace('.', ',');
+ 	const yeniSatir = `
+  	  <tr>
+  	      <td>${satir.COMP}</td>
+  	      <td>${formatliDeger}</td>
+ 	   </tr>
+  	  `;
+ 	   bilesenBody.insertAdjacentHTML('beforeend', yeniSatir);
+	});
+
+
+
+        } catch (error) {
+            console.error("Buton işlem hatası:", error);
+            txtAnaNo.innerText = "Hata oluştu!";
+            txtAnaNo.style.color = "#dc2626"; // Kırmızı
+        }
+
+    }
+
+async function veriGetir() {
+    const tableBody = document.getElementById('supabaseTableBody');
+	const bilesenBody = document.getElementById("bileşenTableBody");
+    if (!tableBody) return;
+    
+    tableBody.innerHTML = '<tr><td colspan="6" class="status-row">Veritabanından güncel kayıtlar çekiliyor...</td></tr>';
+    
+    const uretimGunuInput = document.getElementById('uretimGunu');
+    const konumInput = document.getElementById('konum');
+    const dokumNoInput = document.getElementById('dokumNo');
+
+    const secilenTarih = uretimGunuInput ? uretimGunuInput.value : '';
+    const secilenKonum = konumInput ? konumInput.value : 'ALL';
+    const girilenDokumNo = dokumNoInput ? dokumNoInput.value.trim() : '';
+	let apiTargetUrl = "";
+	
+	if (/^\d{7}$/.test(girilenDokumNo)) 
+	{
+	 apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}?select=*`;
+            
+            const temizDN = girilenDokumNo.trim();
+            apiTargetUrl += `&HT_NO=eq.${temizDN}`;
+            apiTargetUrl += `&order=ANA_NO.desc`;
+	} 
+	else {
+	   
+	 apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}?select=*`;
+                        
+        if (secilenTarih) {
+            apiTargetUrl += `&ANA_DATE=gte.${secilenTarih}T00:00:00&ANA_DATE=lte.${secilenTarih}T23:59:59`;
+        }
+	if (secilenKonum && secilenKonum !== 'ALL') {
+            const temizKonum = secilenKonum.trim();
+            apiTargetUrl += `&LOCAT=ilike.*${temizKonum}*`;
+        }
+
+        apiTargetUrl += `&order=ANA_NO.desc`;
+	}
+
+       try {              
+       const response = await fetch(apiTargetUrl, {
+            method: "GET",
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Bağlantı Hatası: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log("Gelen Veri Sayısı (Sunucudan Filtrelenmiş):", data.length);
+        console.log("Tabloya Yazılacak Veriler:", data);
+        tableBody.innerHTML = '';
+	bilesenBody.innerHTML = '';
+        
+        if (data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="status-row">Seçilen kriterlere uygun hiçbir veri bulunamadı.</td></tr>';
+            return;
+        }
+
+        // Verileri döngüyle HTML tablosuna basma
+        data.forEach(item => {
+            const tr = document.createElement('tr');
+            const formatliTarih = item.ANA_DATE ? new Date(item.ANA_DATE).toLocaleString('tr-TR') : '';
+            tr.innerHTML = `
+                <td>${item.ANA_NO ?? ''}</td>
+                <td>${item.HT_NO ?? ''}</td>
+                <td>${item.SMP_NO ?? ''}</td>
+                <td>${item.LOCAT ?? ''}</td>
+                <td>${item.DESCR ?? ''}</td>
+                <td>${formatliTarih}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+
+	const veri = tableBody.rows[0].cells[0].textContent; 
+	await analizyaz(veri);
+
+    } catch (error) {
+        console.error("Tablo yükleme hatası:", error);
+        tableBody.innerHTML = "<tr><td colspan='6' class='status-row' style='color: #dc2626; font-weight: 600;'>Veri yükleme hatası: " + error.message + "</td></tr>";
+    }
+}
+
+document.getElementById("supabaseTableBody").addEventListener("click", async function(event) {
+    const satir = event.target.closest("tr");
+    
+    // Satır geçerliyse ve "Veriler bekleniyor..." satırı değilse işleme al
+    if (satir && !satir.querySelector(".status-row")) {
+        
+        // İlk tablodan tıklanan satırın en başındaki ANA_NO değerini alıyoruz
+        const secilenAnaNo = satir.cells[0].innerText;
+        
+        // Görsel Geri Bildirim: Seçilen satırı renklendir, eski seçilenleri temizle
+        const tumSatirlar = this.querySelectorAll("tr");
+        tumSatirlar.forEach(s => s.style.backgroundColor = "");
+        satir.style.backgroundColor = "#e0f7fa";
+
+        // İkinci tabloyu yükleniyor durumuna getir
+        const bilesenBody = document.getElementById("bileşenTableBody");
+        bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Veriler çekiliyor (No: ${secilenAnaNo})...</td></tr>`;
+
+        // Sizin fetch yapınızla uyumlu sorgu fonksiyonunu tetikle
+        await analizyaz(secilenAnaNo);
+    }
+});
+
+// Sizin projenizin altyapısına (Fetch API) uygun hale getirilmiş sorgu fonksiyonu
+
+async function bilesenVerileriniGetir(anaNoDegeri) {
+    const bilesenBody = document.getElementById("bileşenTableBody");
+
+    try {
+        const sayisalAnaNo = parseInt(anaNoDegeri, 10);
+
+        if (isNaN(sayisalAnaNo)) {
+            bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row" style="color:orange;">Geçersiz sayısal ANA_NO!</td></tr>`;
+            return;
+        }
+
+        // DÜZELTİLEN SATIR: Tırnak işaretleri kaldırıldı
+        const apiTargetUrl = `${SUPABASE_URL}/rest/v1/ana_comp_table?select=*&ANA_NO=eq.2169137`;
+
+        const response = await fetch(apiTargetUrl, {
+            method: "GET",
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Bağlantı Hatası: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data || data.length === 0) {
+            bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row">Bu numara için bileşen verisi bulunamadı.</td></tr>`;
+            return;
+        }
+
+        // Tabloyu temizle ve gelen verileri bas
+        bilesenBody.innerHTML = "";
+        data.forEach((satir) => {
+            const duzgunDeger = satir.DEGER ? Number(satir.DEGER).toFixed(4) : "0.0000";
+
+            const yeniSatir = `
+                <tr>
+                    <td>${satir.COMP}</td>
+                    <td>% ${duzgunDeger}</td>
+                </tr>
+            `;
+            bilesenBody.insertAdjacentHTML('beforeend', yeniSatir);
+        });
+
+    } catch (error) {
+        console.error("Supabase API Hatası:", error.message);
+        bilesenBody.innerHTML = `<tr><td colspan="2" class="status-row" style="color:red;">Veri yüklenirken hata oluştu!</td></tr>`;
+    }
+}
+async function analizyaz(anaNoDegeri) {
+
+        const bilesenBody = document.getElementById("bileşenTableBody");
+        const sorguParametreleri1 = "?select=*&ANA_NO=eq."+anaNoDegeri;
+        const apiTargetUrl1 = `${SUPABASE_URL}/rest/v1/ana_comp_tbl${sorguParametreleri1}`;
+        try {
+	const response1 = await fetch(apiTargetUrl1, {
+                method: "GET",
+                headers: {
+                    "apikey": SUPABASE_ANON_KEY,
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response1.ok) {
+                throw new Error(`Bağlantı Hatası: ${response1.status}`);
+            }
+
+            const veriler1 = await response1.json();
+            	
+                                    
+ 	bilesenBody.innerHTML = "";
+	veriler1.forEach((satir) => {
+	const formatliDeger = Number(satir.DEGER).toFixed(4).replace('.', ',');
+ 	const yeniSatir = `
+  	  <tr>
+  	      <td>${satir.COMP}</td>
+  	      <td>${formatliDeger}</td>
+ 	   </tr>
+  	  `;
+ 	   bilesenBody.insertAdjacentHTML('beforeend', yeniSatir);
+	});
+
+
+
+        } catch (error) {
+            console.error("Buton işlem hatası:", error);
+            
+        }
+
+}
+    </script>
+</body>
+</html>
