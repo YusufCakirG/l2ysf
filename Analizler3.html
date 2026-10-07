@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Üretim Takip Paneli</title>
+    <title>Kimyasal Analizler</title>
     <style>
         * {
             box-sizing: border-box;
@@ -41,7 +41,7 @@
 
         .inputs-container {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-grow: 1;
         }
 
@@ -61,7 +61,7 @@
 
         .input-group input, 
         .input-group select {
-            padding: 8px 12px;
+            padding: 2px 2px;
             border: 1px solid #cbd5e1;
             border-radius: 5px;
             font-size: 12px;
@@ -69,7 +69,7 @@
             transition: border-color 0.2s;
             background-color: #fff;
             height: 35px;
-max-width: 100px; /* Kutuların alabileceği maksimum genişlik */
+	max-width: 120px; /* Kutuların alabileceği maksimum genişlik */
    	width: 100%;  
         }
 
@@ -83,9 +83,10 @@ max-width: 100px; /* Kutuların alabileceği maksimum genişlik */
         .input-group input:focus,
         .input-group select:focus {
             border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+	    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 	 }
-
+	
+	
         .buttons-container {
             display: flex;
             gap: 15px;
@@ -239,7 +240,7 @@ max-width: 100px; /* Kutuların alabileceği maksimum genişlik */
             
             <div class="input-group">
                 <label for="konum">Konum</label>
-                <select id="konum">
+ 		                <select id="konum">
                     <option value="ALL" selected>Genel Analizler</option>
                     <option value="DESU">DESU</option>
                     <option value="CUK1">Çukur 1</option>
@@ -263,6 +264,12 @@ max-width: 100px; /* Kutuların alabileceği maksimum genişlik */
             <div class="input-group">
                 <label for="dokumNo">Döküm No</label>
                 <input type="text" id="dokumNo" placeholder="Örn: 2621234">
+            </div>
+       
+
+            <div class="input-group">
+                <label for="kalite">Kalite Ara</label>
+                <input type="text" id="kalite" placeholder="Örn: 42CrMo4">
             </div>
         </div>
         
@@ -475,12 +482,21 @@ async function veriGetir() {
     const uretimGunuInput = document.getElementById('uretimGunu');
     const konumInput = document.getElementById('konum');
     const dokumNoInput = document.getElementById('dokumNo');
+    const KaliteInput = document.getElementById('kalite');
 
     const secilenTarih = uretimGunuInput ? uretimGunuInput.value : '';
     const secilenKonum = konumInput ? konumInput.value : 'ALL';
     const girilenDokumNo = dokumNoInput ? dokumNoInput.value.trim() : '';
+    const girilenKalite = KaliteInput ? KaliteInput.value.trim() : '';
 	let apiTargetUrl = "";
 	
+if (girilenDokumNo === '' && girilenKalite !== '') {
+	apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}?select=*`;
+	apiTargetUrl += `&DESCR=ilike.*${girilenKalite}*`;
+	apiTargetUrl += `&order=ANA_NO.desc`;
+}
+
+else{
 	if (/^\d{7}$/.test(girilenDokumNo)) 
 	{
 	 apiTargetUrl = `${SUPABASE_URL}/rest/v1/${TABLO_ADI}?select=*`;
@@ -503,6 +519,7 @@ async function veriGetir() {
 
         apiTargetUrl += `&order=ANA_NO.desc`;
 	}
+}
 
        try {              
        const response = await fetch(apiTargetUrl, {
