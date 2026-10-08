@@ -8,7 +8,7 @@
             display: flex;
             justify-content: center; 
             align-items: flex-start; 
-            padding: 20px;
+            padding: 40px;
             margin: 0;
             background-color: #f5f6fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,7 +16,7 @@
         .ana-konteyner {
             display: grid;
             grid-template-columns: 1fr 1fr; 
-            column-gap: 100px; 
+            column-gap: 120px; 
         }
         .sutun {
             display: flex;
@@ -27,13 +27,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 15px; 
+            margin-bottom: 20px; 
         }
         .baslik {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
             color: #2f3640;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         .daire-bof {
             width: 280px;
@@ -51,16 +51,16 @@
         }
                 /* --- YENİ EKLENEN ALT BİLGİ CSS SINIFLARI --- */
         .bof-alt-bilgi {
-            margin-top: 5px;
+            margin-top: 10px;
             text-align: left;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold; 
             color: #2f3640;
             line-height: 1.4;
 /* Yeni Eklenen Çerçeve Özellikleri */
             border: 2px solid #000000;    /* 2 piksel kalınlığında siyah düz çizgi */
             border-radius: 8px;           /* Köşeleri hafifçe yumuşatır */
-            padding: 5px 10px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
+            padding: 10px 15px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
             background-color: #ffffff;    /* Arka planı beyaz yaparak paneli öne çıkarır */
             width: 300px;                 /* Çerçevenin genişliğini sabitleyerek düzenli durmasını sağlar */
             box-sizing: border-box;       /* Genişlik hesaplamasını otomatik ayarlar */
@@ -68,13 +68,13 @@
         }
         .bof-alt-bilgi .ust-baslik {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             text-decoration: underline;
             margin-bottom: 4px;
         }
                 /* --- YENİ EKLENEN ALT BİLGİ CSS SINIFLARI --- */
         .maden-bilgi {
-            margin-top: 5px;
+            margin-top: 10px;
             text-align: left;
             font-size: 18px;
             font-weight: bold; 
@@ -83,7 +83,7 @@
 /* Yeni Eklenen Çerçeve Özellikleri */
             border: 2px solid #000000;    /* 2 piksel kalınlığında siyah düz çizgi */
             border-radius: 8px;           /* Köşeleri hafifçe yumuşatır */
-            padding: 5px 10px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
+            padding: 10px 15px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
             background-color: #ffffff;    /* Arka planı beyaz yaparak paneli öne çıkarır */
             width: 300px;                 /* Çerçevenin genişliğini sabitleyerek düzenli durmasını sağlar */
             box-sizing: border-box;       /* Genişlik hesaplamasını otomatik ayarlar */
@@ -91,12 +91,12 @@
         }
         .maden-bilgi .ust-baslik {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             text-decoration: underline;
             margin-bottom: 4px;
         }
         .butonsaat {
-            margin-top: 5px;
+            margin-top: 10px;
             text-align: center;
             font-size: 18px;
             font-weight: bold; 
@@ -105,7 +105,7 @@
 /* Yeni Eklenen Çerçeve Özellikleri */
             border: 2px solid #000000;    /* 2 piksel kalınlığında siyah düz çizgi */
             border-radius: 8px;           /* Köşeleri hafifçe yumuşatır */
-            padding: 5px 10px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
+            padding: 10px 15px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
             background-color: #ffffff;    /* Arka planı beyaz yaparak paneli öne çıkarır */
             width: 300px;                 /* Çerçevenin genişliğini sabitleyerek düzenli durmasını sağlar */
             box-sizing: border-box;       /* Genişlik hesaplamasını otomatik ayarlar */
@@ -184,9 +184,13 @@
                 <div class='baslik'>BOF1</div>
                 <div class='daire-bof'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2616164</div>
+                    <div class='ana-sayi'>
+<input type="text" id="Bof1HTNo" value="2616114">
+</div>
                     <div class='kampanya-etiket'>Kampanya D.S.</div>
-                    <div class='kampanya-deger'>6328</div>
+                    <div class='kampanya-deger'>
+ <input type="text" id="Bof1kampanya" value="6278">
+</div>
                 </div>
             </div>
 
@@ -194,9 +198,9 @@
                 <div class='baslik'>BOF2</div>
                 <div class='daire-bof'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2625915</div>
+                    <div class='ana-sayi'>2625857</div>
                     <div class='kampanya-etiket'>Kampanya D.S.</div>
-                    <div class='kampanya-deger'>4671</div>
+                    <div class='kampanya-deger'>4613</div>
                 </div>
             </div>
 
@@ -204,28 +208,28 @@
                 <div class='baslik'>BOF3</div>
                 <div class='daire-bof'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2635950</div>
+                    <div class='ana-sayi'>2635903</div>
                     <div class='kampanya-etiket'>Kampanya D.S.</div>
-                    <div class='kampanya-deger'>1045</div>
+                    <div class='kampanya-deger'>998</div>
                 </div>
                     <div class='bof-alt-bilgi'>
                     <div class='ust-baslik'>Döküm Sayıları</div>
-                    <div>Dün     :   40</div>
-                    <div>00-08   :   20</div>
-                    <div>08-16   :   1 </div>
-                    <div>16-24   :   0 </div>
+                    <div>Dün     :   56</div>
+                    <div>00-08   :   23</div>
+                    <div>08-16   :   16</div>
+                    <div>16-24   :   2 </div>
                     
                 </div>
                     <div class='maden-bilgi'>
                     <div class='ust-baslik'>Sıvı Maden Miktarları</div>
-                    <div>De-SU öncesi       : 273</div>
-                    <div>De-SU sonrası      : 0</div>
+                    <div>De-SU öncesi       : 192</div>
+                    <div>De-SU sonrası      : 76</div>
                     <hr style='border: none; border-top: 1px solid #2d3436; margin: 15px 0;'>
-                    <div>Toplam Maden       : 273</div>
+                    <div>Toplam Maden       : 268</div>
                     </div>
                    
                     <div class='butonsaat'>
-                    <div>08.10.2026 08:21</div>
+                    <div>05.10.2026 17:33</div>
                     <hr style='border: none; border-top: 1px solid #dcdde1; margin: 15px 0;'>
                     <a href='hurda_fiyat.html' style='display: inline-block; padding: 10px 20px; background-color: #2f3640; color: white; text-decoration: none; font-size: 16px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); white-space: nowrap; margin-bottom: 15px;'>
                     Hurda Fiyatları
@@ -245,15 +249,15 @@
                 <div class='baslik'>SDM1</div>
                 <div class='daire-sdm'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2616161</div>
+                    <div class='ana-sayi'>2635900</div>
                 </div>
-                <div class='dikdortgen-sdm'>2</div>
+                <div class='dikdortgen-sdm'>8</div>
                 <div class='kutu-ust-yazi'>▐▌150x150</div>
                 <div class='kucuk-kutular-konteyner'>
     <div class='kucuk-kutu kirmizi'></div>
     <div class='kucuk-kutu kirmizi'></div>
     <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu kirmizi'></div>
     <div class='kucuk-kutu kirmizi'></div>
     <div class='kucuk-kutu kirmizi'></div>
 </div>
@@ -269,11 +273,11 @@
                  </div>
                 <div class='dikdortgen-sdm'>0</div>
                 <div class='kucuk-kutular-konteyner'>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu beyaz'></div>
 </div>
 
             </div>
@@ -283,9 +287,9 @@
                 <div class='baslik'>SDM3</div>
                 <div class='daire-sdm'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2625912</div>
+                    <div class='ana-sayi'>2616101</div>
                </div>
-                <div class='dikdortgen-sdm'>0</div>
+                <div class='dikdortgen-sdm'>2</div>
                 <div class='kutu-ust-yazi'>▐►◄▌ 400x500x110</div>
                 <div class='kucuk-kutular-konteyner'>
     <div class='kucuk-kutu beyaz'></div>
@@ -302,16 +306,16 @@
                 <div class='baslik'>SDM4</div>
                 <div class='daire-sdm'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2635942</div>
+                    <div class='ana-sayi'>2616111</div>
                   </div>
-                <div class='dikdortgen-sdm'>20</div>
+                <div class='dikdortgen-sdm'>9</div>
                  <div class='kutu-ust-yazi'>▐▌ 150 x 150</div>
                 <div class='kucuk-kutular-konteyner'>
-    <div class='kucuk-kutu beyaz'></div>
-    <div class='kucuk-kutu beyaz'></div>
-    <div class='kucuk-kutu beyaz'></div>
-    <div class='kucuk-kutu beyaz'></div>
-    <div class='kucuk-kutu beyaz'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
+    <div class='kucuk-kutu kirmizi'></div>
 </div>
 
             </div>
@@ -319,8 +323,56 @@
 
     </div>
 
+<script>
+    // ------ VERİTABANI AYARLARI ------
+    const SUPABASE_URL = "https://ywwxiniqgfqrienlybba.supabase.co"; 
+    const SUPABASE_ANON_KEY = "sb_publishable_lkEsztjwQR4Md4kvs7JXmw_2kkTxc2Z";
+    const TABLO_ADI = "celikhane"; 
 
+  // Sayfa Yüklendiğinde Otomatik Çalışacak Bölüm
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // İlk açılışta bugünün verilerini çek
+        veriGetir();
+        });
+  
+   async function veriGetir() {
+const dokumInput = document.getElementById('Bof1HTNo');
+const kampanyaInput = document.getElementById('Bof1kampanya');
 
+       const sorguParametreleri = "?select=*&limit=1";
+       const apiTargetUrl = `${SUPABASE_URL}/rest/v1/celikhane${sorguParametreleri}`;
+        try {
+            const response = await fetch(apiTargetUrl, {
+                method: "GET",
+                headers: {
+                    "apikey": SUPABASE_ANON_KEY,
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            });
 
+            if (!response.ok) {
+                throw new Error(`Bağlantı Hatası: ${response.status}`);
+            }
+
+            const veriler = await response.json();
+
+            if (!veriler || veriler.length === 0) {
+               console.warn("Veritabanında hiçbir kayıt bulunamadı.");
+                return;
+            }
+
+            // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
+            dokumInput.value = veriler[0].bof1_dno;
+             kampanyaInput.value = veriler[0].bof1_kdsay;
+console.log("Kutucuklar başarıyla güncellendi!");
+	 }
+catch (error) { // <-- Eksik olan catch bloğu ve kapatma parantezi eklendi
+            console.error("Veri çekme hatası:", error);
+        }
+
+    }
+ </script>
 </body>
 </html>
