@@ -184,13 +184,9 @@
                 <div class='baslik'>BOF1</div>
                 <div class='daire-bof'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>
-<input type="text" id="Bof1HTNo" value="2616114">
-</div>
+ <div class='ana-sayi' id="Bof1HTNo">2616114</div>
                     <div class='kampanya-etiket'>Kampanya D.S.</div>
-                    <div class='kampanya-deger'>
- <input type="text" id="Bof1kampanya" value="6278">
-</div>
+  <div class='kampanya-deger' id="Bof1kampanya">6278</div>
                 </div>
             </div>
 
@@ -337,9 +333,6 @@
         });
   
    async function veriGetir() {
-const dokumInput = document.getElementById('Bof1HTNo');
-const kampanyaInput = document.getElementById('Bof1kampanya');
-
        const sorguParametreleri = "?select=*&limit=1";
        const apiTargetUrl = `${SUPABASE_URL}/rest/v1/celikhane${sorguParametreleri}`;
         try {
@@ -364,8 +357,9 @@ const kampanyaInput = document.getElementById('Bof1kampanya');
             }
 
             // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
-            dokumInput.value = veriler[0].bof1_dno;
-             kampanyaInput.value = veriler[0].bof1_kdsay;
+
+			Bof1HTNo.innerText = veriler[0].bof1_dno;
+			Bof1kampanya.innerText = veriler[0].bof1_kdsay;
 console.log("Kutucuklar başarıyla güncellendi!");
 	 }
 catch (error) { // <-- Eksik olan catch bloğu ve kapatma parantezi eklendi
