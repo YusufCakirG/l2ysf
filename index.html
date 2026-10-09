@@ -8,7 +8,7 @@
             display: flex;
             justify-content: center; 
             align-items: flex-start; 
-            padding: 20px;
+            padding: 40px;
             margin: 0;
             background-color: #f5f6fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,7 +16,7 @@
         .ana-konteyner {
             display: grid;
             grid-template-columns: 1fr 1fr; 
-            column-gap: 100px; 
+            column-gap: 120px; 
         }
         .sutun {
             display: flex;
@@ -27,13 +27,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 15px; 
+            margin-bottom: 20px; 
         }
         .baslik {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
             color: #2f3640;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         .daire-bof {
             width: 280px;
@@ -51,16 +51,16 @@
         }
                 /* --- YENİ EKLENEN ALT BİLGİ CSS SINIFLARI --- */
         .bof-alt-bilgi {
-            margin-top: 5px;
+            margin-top: 10px;
             text-align: left;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold; 
             color: #2f3640;
             line-height: 1.4;
 /* Yeni Eklenen Çerçeve Özellikleri */
             border: 2px solid #000000;    /* 2 piksel kalınlığında siyah düz çizgi */
             border-radius: 8px;           /* Köşeleri hafifçe yumuşatır */
-            padding: 5px 10px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
+            padding: 10px 15px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
             background-color: #ffffff;    /* Arka planı beyaz yaparak paneli öne çıkarır */
             width: 300px;                 /* Çerçevenin genişliğini sabitleyerek düzenli durmasını sağlar */
             box-sizing: border-box;       /* Genişlik hesaplamasını otomatik ayarlar */
@@ -68,13 +68,13 @@
         }
         .bof-alt-bilgi .ust-baslik {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             text-decoration: underline;
             margin-bottom: 4px;
         }
                 /* --- YENİ EKLENEN ALT BİLGİ CSS SINIFLARI --- */
         .maden-bilgi {
-            margin-top: 5px;
+            margin-top: 10px;
             text-align: left;
             font-size: 18px;
             font-weight: bold; 
@@ -83,7 +83,7 @@
 /* Yeni Eklenen Çerçeve Özellikleri */
             border: 2px solid #000000;    /* 2 piksel kalınlığında siyah düz çizgi */
             border-radius: 8px;           /* Köşeleri hafifçe yumuşatır */
-            padding: 5px 10px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
+            padding: 10px 15px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
             background-color: #ffffff;    /* Arka planı beyaz yaparak paneli öne çıkarır */
             width: 300px;                 /* Çerçevenin genişliğini sabitleyerek düzenli durmasını sağlar */
             box-sizing: border-box;       /* Genişlik hesaplamasını otomatik ayarlar */
@@ -91,12 +91,12 @@
         }
         .maden-bilgi .ust-baslik {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             text-decoration: underline;
             margin-bottom: 4px;
         }
         .butonsaat {
-            margin-top: 5px;
+            margin-top: 10px;
             text-align: center;
             font-size: 18px;
             font-weight: bold; 
@@ -105,7 +105,7 @@
 /* Yeni Eklenen Çerçeve Özellikleri */
             border: 2px solid #000000;    /* 2 piksel kalınlığında siyah düz çizgi */
             border-radius: 8px;           /* Köşeleri hafifçe yumuşatır */
-            padding: 5px 10px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
+            padding: 10px 15px;           /* Çerçevenin içindeki metne nefes aldıracak boşluk */
             background-color: #ffffff;    /* Arka planı beyaz yaparak paneli öne çıkarır */
             width: 300px;                 /* Çerçevenin genişliğini sabitleyerek düzenli durmasını sağlar */
             box-sizing: border-box;       /* Genişlik hesaplamasını otomatik ayarlar */
@@ -184,9 +184,9 @@
                 <div class='baslik'>BOF1</div>
                 <div class='daire-bof'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2616183</div>
+ <div class='ana-sayi' id="Bof1HTNo">*******</div>
                     <div class='kampanya-etiket'>Kampanya D.S.</div>
-                    <div class='kampanya-deger'>6347</div>
+  <div class='kampanya-deger' id="Bof1kampanya">****</div>
                 </div>
             </div>
 
@@ -194,9 +194,9 @@
                 <div class='baslik'>BOF2</div>
                 <div class='daire-bof'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2625937</div>
+                   <div class='ana-sayi' id="Bof2HTNo">*******</div>
                     <div class='kampanya-etiket'>Kampanya D.S.</div>
-                    <div class='kampanya-deger'>4693</div>
+                 <div class='kampanya-deger' id="Bof2kampanya">****</div>
                 </div>
             </div>
 
@@ -204,28 +204,31 @@
                 <div class='baslik'>BOF3</div>
                 <div class='daire-bof'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2635966</div>
+                    <div class='ana-sayi' id="Bof3HTNo">*******</div>
                     <div class='kampanya-etiket'>Kampanya D.S.</div>
-                    <div class='kampanya-deger'>1061</div>
+                   <div class='kampanya-deger' id="Bof3kampanya">****</div>
                 </div>
-                    <div class='bof-alt-bilgi'>
-                    <div class='ust-baslik'>Döküm Sayıları</div>
-                    <div>Dün     :   58</div>
-                    <div>00-08   :   19</div>
-                    <div>08-16   :   1 </div>
-                    <div>16-24   :   0 </div>
-                    
-                </div>
+                   
+			<div class='bof-alt-bilgi'>
+  			  <div class='ust-baslik'>Döküm Sayıları</div>
+  			  <div>Dün     :   <span id="dun_ds">--</span></div>
+  			  <div>00-08   :   <span id="gece_ds">--</span></div>
+  			  <div>08-16   :   <span id="gunduz_ds">--</span></div>
+  			  <div>16-24   :   <span id="aksam_ds">--</span></div>
+			</div>
+
                     <div class='maden-bilgi'>
                     <div class='ust-baslik'>Sıvı Maden Miktarları</div>
-                    <div>De-SU öncesi       : 129</div>
-                    <div>De-SU sonrası      : 91</div>
+                    <div>De-SU öncesi       : <span id="maden_bd">--</span></div>
+                    <div>De-SU sonrası      : <span id="maden_ad">--</span></div>
                     <hr style='border: none; border-top: 1px solid #2d3436; margin: 15px 0;'>
-                    <div>Toplam Maden       : 220</div>
+                    <div>Toplam Maden       : <span id="maden_toplam">--</span></div>
                     </div>
                    
                     <div class='butonsaat'>
-                    <div>09.10.2026 08:49</div>
+                     <div id="dinamik-tarih-saat">
+    Yükleniyor...
+  </div>
                     <hr style='border: none; border-top: 1px solid #dcdde1; margin: 15px 0;'>
                     <a href='hurda_fiyat.html' style='display: inline-block; padding: 10px 20px; background-color: #2f3640; color: white; text-decoration: none; font-size: 16px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); white-space: nowrap; margin-bottom: 15px;'>
                     Hurda Fiyatları
@@ -245,36 +248,38 @@
                 <div class='baslik'>SDM1</div>
                 <div class='daire-sdm'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2625933</div>
+                   <div class='ana-sayi' id="sdm1dno">*******</div>
                 </div>
-                <div class='dikdortgen-sdm'>6</div>
+                <div class='dikdortgen-sdm' id="sdm1tdno">**</div>
                 <div class='kutu-ust-yazi'>▐▌150x150</div>
-                <div class='kucuk-kutular-konteyner'>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
+               <div class='kucuk-kutular-konteyner' id="sdm1-kutular">
+  <div class="kucuk-kutu" data-index="1"></div>
+    <div class="kucuk-kutu" data-index="2"></div>
+    <div class="kucuk-kutu" data-index="3"></div>
+    <div class="kucuk-kutu" data-index="4"></div>
+    <div class="kucuk-kutu" data-index="5"></div>
+    <div class="kucuk-kutu" data-index="6"></div>
 </div>
 
-            </div>
+
+
+</div>
 
             <!-- 2. SDM Grubu -->
             <div class='grup'>
                 <div class='baslik'>SDM2</div>
                 <div class='daire-sdm'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>0</div>
+                    <div class='ana-sayi' id="sdm2dno">*******</div>
                  </div>
-                <div class='dikdortgen-sdm'>0</div>
-                <div class='kucuk-kutular-konteyner'>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-</div>
+                <div class='dikdortgen-sdm' id="sdm2tdno">**</div>
+   <div class='kucuk-kutular-konteyner' id="sdm2-kutular">
+  <div class="kucuk-kutu" data-index="1"></div>
+    <div class="kucuk-kutu" data-index="2"></div>
+    <div class="kucuk-kutu" data-index="3"></div>
+    <div class="kucuk-kutu" data-index="4"></div>
+    <div class="kucuk-kutu" data-index="5"></div>
+  </div>
 
             </div>
 
@@ -283,16 +288,16 @@
                 <div class='baslik'>SDM3</div>
                 <div class='daire-sdm'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>2625926</div>
+                    <div class='ana-sayi' id="sdm3dno">*******</div>
                </div>
-                <div class='dikdortgen-sdm'>0</div>
-                <div class='kutu-ust-yazi'>▐►◄▌ 400x500x110</div>
-                <div class='kucuk-kutular-konteyner'>
-    <div class='kucuk-kutu beyaz'></div>
-    <div class='kucuk-kutu beyaz'></div>
-    <div class='kucuk-kutu beyaz'></div>
-    <div class='kucuk-kutu beyaz'></div>
-    <div class='kucuk-kutu beyaz'></div>
+               <div class='dikdortgen-sdm' id="sdm3tdno">**</div>
+               <div class='kutu-ust-yazi'id="sdm3kesit">**</div>
+  <div class='kucuk-kutular-konteyner' id="sdm3-kutular">
+  <div class="kucuk-kutu" data-index="1"></div>
+    <div class="kucuk-kutu" data-index="2"></div>
+    <div class="kucuk-kutu" data-index="3"></div>
+    <div class="kucuk-kutu" data-index="4"></div>
+    <div class="kucuk-kutu" data-index="5"></div>
 </div>
 
             </div>
@@ -302,16 +307,16 @@
                 <div class='baslik'>SDM4</div>
                 <div class='daire-sdm'>
                     <div class='dokum-no'>Döküm No</div>
-                    <div class='ana-sayi'>0</div>
+                   <div class='ana-sayi' id="sdm4dno">*******</div>
                   </div>
-                <div class='dikdortgen-sdm'>7</div>
-                 <div class='kutu-ust-yazi'>▐▌ 150 x 150</div>
-                <div class='kucuk-kutular-konteyner'>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
-    <div class='kucuk-kutu kirmizi'></div>
+                <div class='dikdortgen-sdm' id="sdm4tdno">**</div>
+                 <div class='kutu-ust-yazi'id="sdm4kesit">**</div>
+    <div class='kucuk-kutular-konteyner' id="sdm4-kutular">
+  <div class="kucuk-kutu" data-index="1"></div>
+    <div class="kucuk-kutu" data-index="2"></div>
+    <div class="kucuk-kutu" data-index="3"></div>
+    <div class="kucuk-kutu" data-index="4"></div>
+    <div class="kucuk-kutu" data-index="5"></div>
 </div>
 
             </div>
@@ -319,8 +324,157 @@
 
     </div>
 
+<script>
+    // ------ VERİTABANI AYARLARI ------
+    const SUPABASE_URL = "https://ywwxiniqgfqrienlybba.supabase.co"; 
+    const SUPABASE_ANON_KEY = "sb_publishable_lkEsztjwQR4Md4kvs7JXmw_2kkTxc2Z";
+    const TABLO_ADI = "celikhane"; 
 
 
+  // Sayfa Yüklendiğinde Otomatik Çalışacak Bölüm
+    	document.addEventListener('DOMContentLoaded', () => {
+        
+        // İlk açılışta bugünün verilerini çek
+        veriGetir();
+        });
+  
+   async function veriGetir() {
+       const sorguParametreleri = "?select=*&limit=1";
+       const apiTargetUrl = `${SUPABASE_URL}/rest/v1/celikhane${sorguParametreleri}`;
+        try {
+            const response = await fetch(apiTargetUrl, {
+                method: "GET",
+                headers: {
+                    "apikey": SUPABASE_ANON_KEY,
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            });
 
+            if (!response.ok) {
+                throw new Error(`Bağlantı Hatası: ${response.status}`);
+            }
+
+            const veriler = await response.json();
+
+            if (!veriler || veriler.length === 0) {
+               console.warn("Veritabanında hiçbir kayıt bulunamadı.");
+                return;
+            }
+
+            // Supabase'den gelen dizinin (array) ilk elemanının (0. indeks) ANA_NO bilgisini alıyoruz
+const dbTarihi = new Date(veriler[0].takvim);
+const formatliTarih = dbTarihi.toLocaleString('tr-TR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+document.getElementById('dinamik-tarih-saat').innerText = formatliTarih;
+			Bof1HTNo.innerText = veriler[0].bof1_dno;
+			Bof1kampanya.innerText = veriler[0].bof1_kdsay;
+			Bof2HTNo.innerText = veriler[0].bof2_dno;
+			Bof2kampanya.innerText = veriler[0].bof2_kdsay;
+			Bof3HTNo.innerText = veriler[0].bof3_dno;
+			Bof3kampanya.innerText = veriler[0].bof3_kdsay;
+ 			sdm1dno.innerText = veriler[0].sdm1_dno;
+ 			sdm2dno.innerText = veriler[0].sdm2_dno;
+ 			sdm3dno.innerText = veriler[0].sdm3_dno;
+ 			sdm4dno.innerText = veriler[0].sdm4_dno;
+			sdm1tdno.innerText = veriler[0].sdm1_tdno;
+ 			sdm2tdno.innerText = veriler[0].sdm2_tdno;
+ 			sdm3tdno.innerText = veriler[0].sdm3_tdno;
+ 			sdm4tdno.innerText = veriler[0].sdm4_tdno;
+			sdm3kesit.innerText=veriler[0].sdm3_kesit;
+			sdm4kesit.innerText=veriler[0].sdm4_kesit;
+			dun_ds.innerText = veriler[0].dun_ds;
+			gece_ds.innerText = veriler[0].gece_ds;
+			gunduz_ds.innerText = veriler[0].gunduz_ds;
+			aksam_ds.innerText = veriler[0].aksam_ds;
+			maden_bd.innerText = veriler[0].maden_bd;
+			maden_ad.innerText = veriler[0].maden_ad;
+
+ 
+            // SDM1 YOLLAR
+            const kutuElementleri1 = document.querySelectorAll('#sdm1-kutular .kucuk-kutu');
+            
+            kutuElementleri1.forEach((kutu) => {
+               const index = kutu.getAttribute('data-index');
+               const durum = veriler[0][`sdm1_sr${index}_status`];
+               kutu.classList.remove('kirmizi', 'beyaz');
+		if (durum === true || durum === 1 || durum === "true") {
+                    kutu.classList.add('kirmizi');
+                } else {
+                    kutu.classList.add('beyaz');
+                }
+           
+            });
+
+// SDM2 YOLLAR 
+		const kutuElementleri2 = document.querySelectorAll('#sdm2-kutular .kucuk-kutu');
+            
+            kutuElementleri2.forEach((kutu) => {
+               const index = kutu.getAttribute('data-index');
+               const durum = veriler[0][`sdm2_sr${index}_status`];
+               kutu.classList.remove('kirmizi', 'beyaz');
+		if (durum === true || durum === 1 || durum === "true") {
+                    kutu.classList.add('kirmizi');
+                } else {
+                    kutu.classList.add('beyaz');
+                }
+           
+            });
+
+// SDM3 YOLLAR
+            const kutuElementleri3 = document.querySelectorAll('#sdm3-kutular .kucuk-kutu');
+            
+            kutuElementleri3.forEach((kutu) => {
+               const index = kutu.getAttribute('data-index');
+               const durum = veriler[0][`sdm3_sr${index}_status`];
+               kutu.classList.remove('kirmizi', 'beyaz');
+		if (durum === true || durum === 1 || durum === "true") {
+                    kutu.classList.add('kirmizi');
+                } else {
+                    kutu.classList.add('beyaz');
+                }
+           
+            });
+// SDM4 YOLLAR
+            const kutuElementleri4 = document.querySelectorAll('#sdm4-kutular .kucuk-kutu');
+            
+            kutuElementleri4.forEach((kutu) => {
+               const index = kutu.getAttribute('data-index');
+               const durum = veriler[0][`sdm4_sr${index}_status`];
+               kutu.classList.remove('kirmizi', 'beyaz');
+		if (durum === true || durum === 1 || durum === "true") {
+                    kutu.classList.add('kirmizi');
+                } else {
+                    kutu.classList.add('beyaz');
+                }
+           
+            });
+	 }
+catch (error) { // <-- Eksik olan catch bloğu ve kapatma parantezi eklendi
+            console.error("Veri çekme hatası:", error);
+        }
+
+			const oncesiElement = document.getElementById('maden_bd');
+			const sonrasiElement = document.getElementById('maden_ad');
+			const toplamElement = document.getElementById('maden_toplam');
+
+			// 2. Elementlerin içindeki metinleri (yazıları) sayıya çeviriyoruz
+			const oncesiMiktar = parseFloat(oncesiElement.innerText) || 0;
+			const sonrasiMiktar = parseFloat(sonrasiElement.innerText) || 0;
+
+			// 3. İki değeri toplayıp Toplam Maden alanına yazdırıyoruz
+			const toplam = oncesiMiktar + sonrasiMiktar;
+			toplamElement.innerText = toplam;
+
+  
+    
+    }
+
+ </script>
 </body>
 </html>
