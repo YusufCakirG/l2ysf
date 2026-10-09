@@ -128,6 +128,7 @@
 
         /* Tablo Alanı */
         .tables-wrapper {
+	
             display: flex;
             gap: 25px;
             align-items: flex-start;
@@ -136,7 +137,8 @@
         .table-container {
             background-color: #ffffff;
             border-radius: 6px;
-            overflow: hidden;
+	    max-height: 600px; /* İstediğiniz maksimum yükseklik */
+            overflow-y: auto;  /* Dikeyde kaydırma çubuğu çıkarır */
             border: 1px solid #e2e8f0;
         }
 
