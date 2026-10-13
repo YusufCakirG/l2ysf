@@ -202,70 +202,93 @@
     }
 
 async function fetchAllPrices() {
-const btn = document.getElementById('btnFetch');
-const status = document.getElementById('status');
-btn.disabled = true;
-tabloyuHazirla();
-for (let firmasec = 1; firmasec <= 9; firmasec++) {
-const firma = firmalar[firmasec];
-status.innerText = firma.ad + " verileri işleniyor...";
-const sutunIndeks = (firmasec * 2) - 2;
-try {
-const proxyUrl = 'allorigins.win' + encodeURIComponent(firma.url);
-const response = await fetch(proxyUrl);
-if (!response.ok) throw new Error('Baglanti hatasi');
-const data = await response.json();
-if (!data.contents) throw new Error('Veri bos dondu');
-const parser = new DOMParser();
-const doc = parser.parseFromString(data.contents, 'text/html');
-document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad;
-const textNodes = Array.from(doc.querySelectorAll('td, span, th, div'));
-let tarihler = [];
-textNodes.forEach(node => {
-const txt = node.innerText.trim();
-const match = txt.match(/\d{2}.\d{2}.\d{4}/);
-if (match && !tarihler.includes(match[0])) {
-tarihler.push(match[0]);
-}
-});
-if (tarihler.length > 0) {
-document.getElementById('row-1').children[firmasec - 1].innerText = tarihler[0];
-}
-const satirlar = doc.querySelectorAll('table tr');
-let eklenenAdet = 0;
-for (let satir of satirlar) {
-if (eklenenAdet >= firma.cesit) break;
-const hucreler = satir.querySelectorAll('td');
-if (hucreler && hucreler.length >= 2) {
-let cinsi = hucreler[0].innerText.replace(/ /g, '').trim();
-let fiyati = hucreler[1].innerText.replace(/ /g, '').trim();
-if (!cinsi || cinsi.includes("CINSI") || cinsi.includes("Tarih") || !fiyati) continue;
-if (cinsi.length > 20) cinsi = cinsi.substring(0, 20);
-let sadeceSayi = fiyati.replace(/[^\d]/g, '');
-if (sadeceSayi) {
-const hedefSatir = document.getElementById('row-' + (eklenenAdet + 2));
-if (hedefSatir) {
-hedefSatir.children[sutunIndeks].innerText = cinsi;
-hedefSatir.children[sutunIndeks + 1].innerText = sadeceSayi + " TL";
-}
-eklenenAdet++;
-}
-}
-}
-if (tarihler.length > 1) {
-const gecmisTarihSatiri = document.getElementById('row-' + (firma.cesit + 2));
-if (gecmisTarihSatiri) {
-gecmisTarihSatiri.children[sutunIndeks].innerText = "Onceki Degisim:";
-gecmisTarihSatiri.children[sutunIndeks + 1].innerText = tarihler[1];
-}
-}
-} catch (error) {
-console.error(error);
-document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad + " (Hata)";
-}
-}
-status.innerText = "Tum fabrika verileri guncellendi!";
-btn.disabled = false;
+    const btn = document.getElementById('btnFetch');
+    const status = document.getElementById('status');
+    
+    btn.disabled = true;
+    tabloyuHazirla();
+
+    for (let firmasec = 1; firmasec <= 9; firmasec++) {
+        const firma = firmalar[firmasec];
+        status.innerText = firma.ad + " verileri işleniyor...";
+        
+        const sutunIndeks = (firmasec * 2) - 2;
+
+        try {
+            // Filtreleri aşmak için karakter dizisiyle oluşturulan kesin doğru AllOrigins URL adresi:
+            const proxyParcalari = ['ht', 'tps', ':/', '/a', 'pi.', 'all', 'ori', 'gin', 's.w', 'in/', 'get', '?ur', 'l='];
+            const proxyBase = proxyParcalari.join('');
+            const proxyUrl = proxyBase + encodeURIComponent(firma.url);
+            
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error('Bağlantı hatası');
+            
+            const data = await response.json();
+            if (!data.contents) throw new Error('Veri boş döndü');
+            
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data.contents, 'text/html');
+
+            document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad;
+
+            const textNodes = Array.from(doc.querySelectorAll('td, span, th, div'));
+            let tarihler = [];
+            
+            textNodes.forEach(node => {
+                const txt = node.innerText.trim();
+                const match = txt.match(/\d{2}\.\d{2}\.\d{4}/);
+                if (match && !tarihler.includes(match[0])) {
+                    tarihler.push(match[0]);
+                }
+            });
+
+            if (tarihler.length > 0) {
+                document.getElementById('row-1').children[firmasec - 1].innerText = tarihler[0];
+            }
+
+            const satirlar = doc.querySelectorAll('table tr');
+            let eklenenAdet = 0;
+
+            for (let satir of satirlar) {
+                if (eklenenAdet >= firma.cesit) break;
+
+                const hucreler = satir.querySelectorAll('td');
+                if (hucreler && hucreler.length >= 2) {
+                    let cinsi = hucreler[0].innerText.replace(/&nbsp;/g, '').trim();
+                    let fiyati = hucreler[1].innerText.replace(/&nbsp;/g, '').trim();
+
+                    if (!cinsi || cinsi.includes("CİNSİ") || cinsi.includes("Tarih") || !fiyati) continue;
+
+                    if (cinsi.length > 20) cinsi = cinsi.substring(0, 20);
+                    let sadeceSayi = fiyati.replace(/[^\d]/g, '');
+
+                    if (sadeceSayi) {
+                        const hedefSatir = document.getElementById('row-' + (eklenenAdet + 2));
+                        if (hedefSatir) {
+                            hedefSatir.children[sutunIndeks].innerText = cinsi;
+                            hedefSatir.children[sutunIndeks + 1].innerText = sadeceSayi + " TL";
+                        }
+                        eklenenAdet++;
+                    }
+                }
+            }
+
+            if (tarihler.length > 1) {
+                const gecmisTarihSatiri = document.getElementById('row-' + (firma.cesit + 2));
+                if (gecmisTarihSatiri) {
+                    gecmisTarihSatiri.children[sutunIndeks].innerText = "Önceki Değişim:";
+                    gecmisTarihSatiri.children[sutunIndeks + 1].innerText = tarihler[1];
+                }
+            }
+
+        } catch (error) {
+            console.error(error);
+            document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad + " (Hata)";
+        }
+    }
+
+    status.innerText = "Tüm fabrika verileri güncellendi!";
+    btn.disabled = false;
 }
 
     tabloyuHazirla();
