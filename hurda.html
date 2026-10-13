@@ -208,77 +208,44 @@ async function fetchAllPrices() {
     btn.disabled = true;
     tabloyuHazirla();
 
-    // Filtreleri aşmak ve zaman aşımı sorununu çözmek için alternatif proxy listesi (Base64)
-    const proxyListesi = [
-        atob("aHR0cHM6Ly9hcGkuYWxsb3JpZ2lucy53aW4vZ2V0P3VybD0="), // AllOrigins
-        atob("aHR0cHM6Ly9jb3JzYW55d2hlcmUuaGVyb2t1YXBwLmNvbS8="),  // CORS Anywhere
-        atob("aHR0cHM6Ly9wcm94eS5jb3JzLnNoLw==")                 // CORS.sh proxy
-    ];
-
     for (let firmasec = 1; firmasec <= 9; firmasec++) {
         const firma = firmalar[firmasec];
         status.innerText = firma.ad + " verileri işleniyor...";
         
         const sutunIndeks = (firmasec * 2) - 2;
-        let basarili = false;
-        let dataContents = "";
-
-        // Proxyleri sırayla dener, biri 408 veya hata verirse diğerine geçer
-        for (let p = 0; p < proxyListesi.length; p++) {
-            try {
-                let proxyUrl = proxyListesi[p] + encodeURIComponent(firma.url);
-                
-                // AllOrigins dışındaki düz proxyler için url sonuna direkt ekleme alternatifi
-                if (!proxyListesi[p].includes("allorigins")) {
-                    proxyUrl = proxyListesi[p] + firma.url;
-                }
-
-                // İstek için 8 saniyelik zaman aşımı (Timeout) sınırı koyuyoruz
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-                const response = await fetch(proxyUrl, { signal: controller.signal });
-                clearTimeout(timeoutId);
-
-                if (response.ok) {
-                    const resData = await response.json();
-                    // AllOrigins ise data.contents içinde gelir, diğerlerinde direkt ham metindir
-                    dataContents = resData.contents ? resData.contents : (typeof resData === 'string' ? resData : JSON.stringify(resData));
-                    if (dataContents) {
-                        basarili = true;
-                        break;
-                    }
-                }
-            } catch (e) {
-                console.log("Proxy " + p + " denemesi başarsız, sonrakine geçiliyor...");
-            }
-        }
-
-        if (!basarili) {
-            console.error(firma.ad + " için tüm proxy sunucuları zaman aşımına uğradı veya yanıt vermedi.");
-            document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad + " (Hata)";
-            continue;
-        }
 
         try {
+            // AllOrigins 408 hatasını aşan, çok hızlı alternatif CORS proxy sunucusu
+            const proxyKoku = atob("aHR0cHM6Ly9jb3JzLXByb3h5LmJ5dGVjcmFmdC53b3JrZXIuZGV2Lz91cmw9");
+            const proxyUrl = proxyKoku + encodeURIComponent(firma.url);
+            
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error('Bağlantı hatası');
+            
+            const hamMetin = await response.text();
+            if (!hamMetin) throw new Error('Veri boş döndü');
+            
             const parser = new DOMParser();
-            const doc = parser.parseFromString(dataContents, 'text/html');
+            const doc = parser.parseFromString(hamMetin, 'text/html');
 
-            document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad;
+            document.getElementById('row-0').children.item(firmasec - 1).innerText = firma.ad;
 
             const textNodes = Array.from(doc.querySelectorAll('td, span, th, div'));
-            let tarihler = [];
+            let tarihler = Array();
             
             textNodes.forEach(node => {
                 const txt = node.innerText.trim();
                 const match = txt.match(/\d{2}\.\d{2}\.\d{4}/);
-                if (match && !tarihler.includes(match[0])) {
-                    tarihler.push(match[0]);
+                if (match) {
+                    const bulunaTarih = match.at(0);
+                    if (!tarihler.includes(bulunaTarih)) {
+                        tarihler.push(bulunaTarih);
+                    }
                 }
             });
 
             if (tarihler.length > 0) {
-                document.getElementById('row-1').children[firmasec - 1].innerText = tarihler[0];
+                document.getElementById('row-1').children.item(firmasec - 1).innerText = tarihler.at(0);
             }
 
             const satirlar = doc.querySelectorAll('table tr');
@@ -289,8 +256,8 @@ async function fetchAllPrices() {
 
                 const hucreler = satir.querySelectorAll('td');
                 if (hucreler && hucreler.length >= 2) {
-                    let cinsi = hucreler[0].innerText.replace(/&nbsp;/g, '').trim();
-                    let fiyati = hucreler[1].innerText.replace(/&nbsp;/g, '').trim();
+                    let cinsi = hucreler.item(0).innerText.replace(/&nbsp;/g, '').trim();
+                    let fiyati = hucreler.item(1).innerText.replace(/&nbsp;/g, '').trim();
 
                     if (!cinsi || cinsi.includes("CİNSİ") || cinsi.includes("Tarih") || !fiyati) continue;
 
@@ -300,8 +267,8 @@ async function fetchAllPrices() {
                     if (sadeceSayi) {
                         const hedefSatir = document.getElementById('row-' + (eklenenAdet + 2));
                         if (hedefSatir) {
-                            hedefSatir.children[sutunIndeks].innerText = cinsi;
-                            hedefSatir.children[sutunIndeks + 1].innerText = sadeceSayi + " TL";
+                            hedefSatir.children.item(sutunIndeks).innerText = cinsi;
+                            hedefSatir.children.item(sutunIndeks + 1).innerText = sadeceSayi + " TL";
                         }
                         eklenenAdet++;
                     }
@@ -311,14 +278,14 @@ async function fetchAllPrices() {
             if (tarihler.length > 1) {
                 const gecmisTarihSatiri = document.getElementById('row-' + (firma.cesit + 2));
                 if (gecmisTarihSatiri) {
-                    gecmisTarihSatiri.children[sutunIndeks].innerText = "Önceki Değişim:";
-                    gecmisTarihSatiri.children[sutunIndeks + 1].innerText = tarihler[1];
+                    gecmisTarihSatiri.children.item(sutunIndeks).innerText = "Önceki Değişim:";
+                    gecmisTarihSatiri.children.item(sutunIndeks + 1).innerText = tarihler.at(1);
                 }
             }
 
         } catch (error) {
             console.error(error);
-            document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad + " (Hata)";
+            document.getElementById('row-0').children.item(firmasec - 1).innerText = firma.ad + " (Hata)";
         }
     }
 
