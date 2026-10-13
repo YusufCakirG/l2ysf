@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabrika Hurda Demir Fiyatları Takip Paneli</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --border-color: #dee2e6;
+            --header-bg: #343a40;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--header-bg);
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-fetch {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-fetch:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-fetch:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 1500px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--header-bg);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .row-company {
+            background-color: #e9ecef;
+            font-weight: bold;
+            text-align: center;
+            font-size: 15px;
+        }
+        
+        .row-company td {
+            text-align: center;
+            color: #495057;
+        }
+
+        .row-date {
+            background-color: #f8f9fa;
+            font-style: italic;
+            color: #6c757d;
+        }
+
+        td.price-col {
+            text-align: right;
+            font-weight: bold;
+            color: #28a745;
+            background-color: #fcfdfc;
+        }
+
+        tr:hover {
+            background-color: #f1f3f5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Fabrika Hurda Demir Fiyatları Takip Paneli</h1>
+    
+    <div class="controls">
+        <button id="btnFetch" class="btn-fetch" onclick="fetchAllPrices()">Verileri Çek (C# Grid Mantığı)</button>
+        <div id="status" class="status-message">Başlamak için butona tıklayın...</div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="dataGridView3">
+            <thead>
+                <tr id="headerRow">
+                    <!-- Dinamik sütunlar JavaScript ile yüklenecek -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="row-0" class="row-company"></tr>
+                <tr id="row-1" class="row-date"></tr>
+                <!-- Dinamik veri satırları buraya gelecek -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const firmalar = {
+        1: { ad: "KARDEMİR", cesit: 6, url: "https://bimelmetal.com" },
+        2: { ad: "ERDEMİR", cesit: 6, url: "https://bimelmetal.com" },
+        3: { ad: "İSDEMİR", cesit: 6, url: "https://bimelmetal.com" },
+        4: { ad: "ÇOLAKOĞLU", cesit: 5, url: "https://bimelmetal.com" },
+        5: { ad: "ASİL ÇELİK", cesit: 4, url: "https://bimelmetal.com" },
+        6: { ad: "KROMAN", cesit: 8, url: "https://bimelmetal.com" },
+        7: { ad: "DİLER", cesit: 5, url: "https://bimelmetal.com" },
+        8: { ad: "HASÇELİK", cesit: 4, url: "https://bimelmetal.com" },
+        9: { ad: "CANSAN", cesit: 6, url: "https://bimelmetal.com" }
+    };
+
+    const maxSatirSayisi = 20;
+
+    function tabloyuHazirla() {
+        const headerRow = document.getElementById('headerRow');
+        const row0 = document.getElementById('row-0');
+        const row1 = document.getElementById('row-1');
+        
+        headerRow.innerHTML = '';
+        row0.innerHTML = '';
+        row1.innerHTML = '';
+
+        for (let i = 1; i <= 9; i++) {
+            headerRow.innerHTML += `<th colspan="2">${firmalar[i].ad}</th>`;
+            row0.innerHTML += `<td colspan="2">-</td>`;
+            row1.innerHTML += `<td colspan="2">Tarih Bekleniyor</td>`;
+        }
+
+        const tbody = document.querySelector('#dataGridView3 tbody');
+        const eskiDinamikSatirlar = tbody.querySelectorAll('.dynamic-row');
+        eskiDinamikSatirlar.forEach(r => r.remove());
+
+        for (let r = 2; r < maxSatirSayisi; r++) {
+            let tr = document.createElement('tr');
+            tr.id = `row-${r}`;
+            tr.className = 'dynamic-row';
+            
+            for (let c = 0; c < 18; c++) {
+                let td = document.createElement('td');
+                if (c % 2 === 1) td.className = 'price-col';
+                td.innerHTML = '&nbsp;';
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+        }
+    }
+
+async function fetchAllPrices() {
+const btn = document.getElementById('btnFetch');
+const status = document.getElementById('status');
+btn.disabled = true;
+tabloyuHazirla();
+for (let firmasec = 1; firmasec <= 9; firmasec++) {
+const firma = firmalar[firmasec];
+status.innerText = firma.ad + " verileri işleniyor...";
+const sutunIndeks = (firmasec * 2) - 2;
+try {
+const proxyUrl = 'allorigins.win' + encodeURIComponent(firma.url);
+const response = await fetch(proxyUrl);
+if (!response.ok) throw new Error('Baglanti hatasi');
+const data = await response.json();
+if (!data.contents) throw new Error('Veri bos dondu');
+const parser = new DOMParser();
+const doc = parser.parseFromString(data.contents, 'text/html');
+document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad;
+const textNodes = Array.from(doc.querySelectorAll('td, span, th, div'));
+let tarihler = [];
+textNodes.forEach(node => {
+const txt = node.innerText.trim();
+const match = txt.match(/\d{2}.\d{2}.\d{4}/);
+if (match && !tarihler.includes(match[0])) {
+tarihler.push(match[0]);
+}
+});
+if (tarihler.length > 0) {
+document.getElementById('row-1').children[firmasec - 1].innerText = tarihler[0];
+}
+const satirlar = doc.querySelectorAll('table tr');
+let eklenenAdet = 0;
+for (let satir of satirlar) {
+if (eklenenAdet >= firma.cesit) break;
+const hucreler = satir.querySelectorAll('td');
+if (hucreler && hucreler.length >= 2) {
+let cinsi = hucreler[0].innerText.replace(/ /g, '').trim();
+let fiyati = hucreler[1].innerText.replace(/ /g, '').trim();
+if (!cinsi || cinsi.includes("CINSI") || cinsi.includes("Tarih") || !fiyati) continue;
+if (cinsi.length > 20) cinsi = cinsi.substring(0, 20);
+let sadeceSayi = fiyati.replace(/[^\d]/g, '');
+if (sadeceSayi) {
+const hedefSatir = document.getElementById('row-' + (eklenenAdet + 2));
+if (hedefSatir) {
+hedefSatir.children[sutunIndeks].innerText = cinsi;
+hedefSatir.children[sutunIndeks + 1].innerText = sadeceSayi + " TL";
+}
+eklenenAdet++;
+}
+}
+}
+if (tarihler.length > 1) {
+const gecmisTarihSatiri = document.getElementById('row-' + (firma.cesit + 2));
+if (gecmisTarihSatiri) {
+gecmisTarihSatiri.children[sutunIndeks].innerText = "Onceki Degisim:";
+gecmisTarihSatiri.children[sutunIndeks + 1].innerText = tarihler[1];
+}
+}
+} catch (error) {
+console.error(error);
+document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad + " (Hata)";
+}
+}
+status.innerText = "Tum fabrika verileri guncellendi!";
+btn.disabled = false;
+}
+
+    tabloyuHazirla();
+</script>
+
+</body>
+</html>
