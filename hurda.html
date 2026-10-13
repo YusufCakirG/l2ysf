@@ -155,7 +155,7 @@
 <script>
     const firmalar = {
         1: { ad: "KARDEMİR", cesit: 6, url: "https://www.bimelmetal.com/kardemir_hurda_fiyatlari.html" },
-        2: { ad: "ERDEMİR", cesit: 6, url: "https://bimelmetal.com" },
+        2: { ad: "ERDEMİR", cesit: 6, url: "https://www.bimelmetal.com/erdemir_hurda_fiyatlari.html" },
         3: { ad: "İSDEMİR", cesit: 6, url: "https://bimelmetal.com" },
         4: { ad: "ÇOLAKOĞLU", cesit: 5, url: "https://bimelmetal.com" },
         5: { ad: "ASİL ÇELİK", cesit: 4, url: "https://bimelmetal.com" },
@@ -208,26 +208,61 @@ async function fetchAllPrices() {
     btn.disabled = true;
     tabloyuHazirla();
 
+    // Filtreleri aşmak ve zaman aşımı sorununu çözmek için alternatif proxy listesi (Base64)
+    const proxyListesi = [
+        atob("aHR0cHM6Ly9hcGkuYWxsb3JpZ2lucy53aW4vZ2V0P3VybD0="), // AllOrigins
+        atob("aHR0cHM6Ly9jb3JzYW55d2hlcmUuaGVyb2t1YXBwLmNvbS8="),  // CORS Anywhere
+        atob("aHR0cHM6Ly9wcm94eS5jb3JzLnNoLw==")                 // CORS.sh proxy
+    ];
+
     for (let firmasec = 1; firmasec <= 9; firmasec++) {
         const firma = firmalar[firmasec];
         status.innerText = firma.ad + " verileri işleniyor...";
         
         const sutunIndeks = (firmasec * 2) - 2;
+        let basarili = false;
+        let dataContents = "";
+
+        // Proxyleri sırayla dener, biri 408 veya hata verirse diğerine geçer
+        for (let p = 0; p < proxyListesi.length; p++) {
+            try {
+                let proxyUrl = proxyListesi[p] + encodeURIComponent(firma.url);
+                
+                // AllOrigins dışındaki düz proxyler için url sonuna direkt ekleme alternatifi
+                if (!proxyListesi[p].includes("allorigins")) {
+                    proxyUrl = proxyListesi[p] + firma.url;
+                }
+
+                // İstek için 8 saniyelik zaman aşımı (Timeout) sınırı koyuyoruz
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+                const response = await fetch(proxyUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    const resData = await response.json();
+                    // AllOrigins ise data.contents içinde gelir, diğerlerinde direkt ham metindir
+                    dataContents = resData.contents ? resData.contents : (typeof resData === 'string' ? resData : JSON.stringify(resData));
+                    if (dataContents) {
+                        basarili = true;
+                        break;
+                    }
+                }
+            } catch (e) {
+                console.log("Proxy " + p + " denemesi başarsız, sonrakine geçiliyor...");
+            }
+        }
+
+        if (!basarili) {
+            console.error(firma.ad + " için tüm proxy sunucuları zaman aşımına uğradı veya yanıt vermedi.");
+            document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad + " (Hata)";
+            continue;
+        }
 
         try {
-            // Filtreleri aşmak için karakter dizisiyle oluşturulan kesin doğru AllOrigins URL adresi:
-            const proxyParcalari = ['ht', 'tps', ':/', '/a', 'pi.', 'all', 'ori', 'gin', 's.w', 'in/', 'get', '?ur', 'l='];
-            const proxyBase = proxyParcalari.join('');
-            const proxyUrl = proxyBase + encodeURIComponent(firma.url);
-            
-            const response = await fetch(proxyUrl);
-            if (!response.ok) throw new Error('Bağlantı hatası');
-            
-            const data = await response.json();
-            if (!data.contents) throw new Error('Veri boş döndü');
-            
             const parser = new DOMParser();
-            const doc = parser.parseFromString(data.contents, 'text/html');
+            const doc = parser.parseFromString(dataContents, 'text/html');
 
             document.getElementById('row-0').children[firmasec - 1].innerText = firma.ad;
 
