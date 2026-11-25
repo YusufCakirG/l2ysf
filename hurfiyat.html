@@ -1,345 +1,400 @@
 <!DOCTYPE html>
 <html lang='tr'>
 <head>
-    <meta charset='UTF-8'>
-    <title>Güncel Fabrika Hurda Fiyatları</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 20px; }
-        h2 { color: #2c3e50; text-align: center; margin-bottom: 20px; }
-        .table-container { overflow-x: auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        table { border-collapse: collapse; width: 100%; min-width: 1500px; text-align: left; }
-        th, td { border: 1px solid #e0e0e0; padding: 10px 8px; font-size: 13px; }
-        th { background-color: #2980b9; color: white; text-align: center; font-weight: bold; }
-        .date-row { background-color: #ecf0f1; font-weight: bold; color: #7f8c8d; text-align: center; }
-        .sub-header { background-color: #34495e; color: white; font-size: 11px; text-align: center; font-weight: bold; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        tr:hover { background-color: #f1f2f6; }
-        .price-text { font-weight: bold; color: #2c3e50; text-align: right; }
-        .pos { color: #27ae60; font-weight: bold; text-align: center; background-color: #e8f8f5; }
-        .neg { color: #c0392b; font-weight: bold; text-align: center; background-color: #f9ebea; }
-        .neutral { color: #7f8c8d; text-align: center; }
-    </style>
+ <meta charset='UTF-8'>
+ <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+ <title>Güncel Fabrika Hurda Fiyatları</title>
+ <style>
+ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 20px; }
+ h2 { color: #2c3e50; text-align: center; margin-bottom: 20px; }
+ .table-container { overflow-x: auto; max-height: 75vh; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+ table { border-collapse: collapse; width: 100%; min-width: 1500px; text-align: left; }
+ th, td { border: 1px solid #e0e0e0; padding: 10px 8px; font-size: 13px; }
+ th { background-color: #2980b9; color: white; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 2; }
+ .date-row { background-color: #ecf0f1; font-weight: bold; color: #7f8c8d; text-align: center; }
+ .today-cell { background-color: #c0392b !important; color: white !important; font-weight: bold; text-align: center; }
+ .sub-header { background-color: #34495e; color: white; font-size: 11px; text-align: center; font-weight: bold; }
+ .fab-border { border-right: 3px solid #95a5a6 !important; }
+ tr:nth-child(even) { background-color: #f9f9f9; }
+ tr:hover { background-color: #f1f2f6; }
+ .price-text { font-weight: bold; color: #2c3e50; text-align: right; }
+ .pos { color: #27ae60; font-weight: bold; text-align: center; background-color: #e8f8f5; }
+ .neg { color: #c0392b; font-weight: bold; text-align: center; background-color: #f9ebea; }
+ .neutral { color: #7f8c8d; text-align: center; }
+ .footer-panel { margin-top: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; }
+ .rates-box { font-size: 15px; color: #2c3e50; font-weight: bold; display: flex; gap: 20px; }
+ .rate-badge { background: #ecf0f1; padding: 8px 14px; border-radius: 6px; border-left: 4px solid #2980b9; }
+ .currency-buttons { display: flex; gap: 10px; }
+ .curr-btn { padding: 10px 18px; border: 2px solid #2980b9; background: white; color: #2980b9; border-radius: 5px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+ .curr-btn.active, .curr-btn:hover { background: #2980b9; color: white; }
+ .home-btn { display: inline-block; padding: 10px 24px; background-color: #27ae60; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+ </style>
 </head>
 <body>
-    <h2>Fabrika Güncel Hurda Demir Fiyatları (25.11.2026 08:44:10)</h2>
-    <div class='table-container'>
-        <table>
-            <tr>
-                <th colspan='3'>KARDEMİR</th>
-                <th colspan='3'>ERDEMİR</th>
-                <th colspan='3'>İSDEMİR</th>
-                <th colspan='3'>ÇOLAKOĞLU</th>
-                <th colspan='3'>ASİL ÇELİK</th>
-                <th colspan='3'>KROMAN</th>
-                <th colspan='3'>DİLER</th>
-                <th colspan='3'>HASÇELİK</th>
-                <th colspan='3'>CANSAN</th>
-                <th colspan='3'>SİLVAN ST</th>
-            </tr>
-            <tr class='date-row'>
-                <td colspan='3' style='background-color: #c0392b; color: white; font-weight: bold; text-align: center;'>25.11.2026 (BUGÜN)</td>
-                <td colspan='3'>17.11.2026</td>
-                <td colspan='3'>11.11.2026</td>
-                <td colspan='3' style='background-color: #c0392b; color: white; font-weight: bold; text-align: center;'>25.11.2026 (BUGÜN)</td>
-                <td colspan='3'>16.11.2026</td>
-                <td colspan='3'>16.11.2026</td>
-                <td colspan='3' style='background-color: #c0392b; color: white; font-weight: bold; text-align: center;'>25.11.2026 (BUGÜN)</td>
-                <td colspan='3' style='background-color: #c0392b; color: white; font-weight: bold; text-align: center;'>25.11.2026 (BUGÜN)</td>
-                <td colspan='3'>17.11.2026</td>
-                <td colspan='3'>18.11.2026</td>
-            </tr>
-            <tr>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-                <td class='sub-header'>Cinsi</td>
-                <td class='sub-header'>Fiyatı (TL)</td>
-                <td class='sub-header'>Değişim</td>
-            </tr>
-            <tr>
-                <td>ÖZEL EKSTRA</td>
-                <td class='price-text'>20.620</td>
-                <td class='pos'>+200</td>
-                <td>DKP</td>
-                <td class='price-text'>20.450</td>
-                <td class='pos'>+300</td>
-                <td>DKP</td>
-                <td class='price-text'>19.150</td>
-                <td class='pos'>+800</td>
-                <td>DKP</td>
-                <td class='price-text'>20.355</td>
-                <td class='pos'>+500</td>
-                <td>DKP</td>
-                <td class='price-text'>20.850</td>
-                <td class='pos'>+300</td>
-                <td>DKP</td>
-                <td class='price-text'>19.855</td>
-                <td class='pos'>+500</td>
-                <td>DKP</td>
-                <td class='price-text'>19.600</td>
-                <td class='pos'>+500</td>
-                <td>DKP</td>
-                <td class='price-text'>21.250</td>
-                <td class='pos'>+700</td>
-                <td>DKP</td>
-                <td class='price-text'>19.100</td>
-                <td class='pos'>+200</td>
-                <td>DKP</td>
-                <td class='price-text'>19.850</td>
-                <td class='pos'>+750</td>
-            </tr>
-            <tr>
-                <td>DKP HURDA</td>
-                <td class='price-text'>20.600</td>
-                <td class='pos'>+200</td>
-                <td>EKSTRA</td>
-                <td class='price-text'>20.400</td>
-                <td class='pos'>+300</td>
-                <td>EKSTRA</td>
-                <td class='price-text'>19.100</td>
-                <td class='pos'>+800</td>
-                <td>EKSTRA</td>
-                <td class='price-text'>19.530</td>
-                <td class='pos'>+500</td>
-                <td>BONUS</td>
-                <td class='price-text'>20.455</td>
-                <td class='pos'>+300</td>
-                <td>BONUS**</td>
-                <td class='price-text'>19.100</td>
-                <td class='pos'>+200</td>
-                <td>EKSTRA</td>
-                <td class='price-text'>19.500</td>
-                <td class='pos'>+500</td>
-                <td>BONUS</td>
-                <td class='price-text'>20.350</td>
-                <td class='pos'>+500</td>
-                <td>TOP SİS</td>
-                <td class='price-text'>18.900</td>
-                <td class='pos'>+200</td>
-                <td>EKSTRA  OCAKLIK</td>
-                <td class='price-text'>19.250</td>
-                <td class='pos'>+750</td>
-            </tr>
-            <tr>
-                <td>EKSTRA</td>
-                <td class='price-text'>20.350</td>
-                <td class='pos'>+200</td>
-                <td>EBATSIZ İMALAT</td>
-                <td class='price-text'>19.950</td>
-                <td class='pos'>+300</td>
-                <td>BONUS</td>
-                <td class='price-text'>19.000</td>
-                <td class='pos'>+800</td>
-                <td>1.GRUP</td>
-                <td class='price-text'>19.390</td>
-                <td class='pos'>+500</td>
-                <td>EKSTRA</td>
-                <td class='price-text'>19.450</td>
-                <td class='pos'>+150</td>
-                <td>EKSTRA</td>
-                <td class='price-text'>19.100</td>
-                <td class='pos'>+200</td>
-                <td>1.GRUP</td>
-                <td class='price-text'>18.700</td>
-                <td class='pos'>+200</td>
-                <td>EKSTRA</td>
-                <td class='price-text'>19.850</td>
-                <td class='pos'>+500</td>
-                <td>BONUS</td>
-                <td class='price-text'>18.200</td>
-                <td class='pos'>+200</td>
-                <td>1.GRUP</td>
-                <td class='price-text'>18.850</td>
-                <td class='pos'>+950</td>
-            </tr>
-            <tr>
-                <td>1.SINIF</td>
-                <td class='price-text'>19.800</td>
-                <td class='pos'>+200</td>
-                <td>BONUS</td>
-                <td class='price-text'>19.650</td>
-                <td class='pos'>+300</td>
-                <td>MAKAS</td>
-                <td class='price-text'>18.500</td>
-                <td class='pos'>+800</td>
-                <td>2.GRUP</td>
-                <td class='price-text'>19.320</td>
-                <td class='pos'>+500</td>
-                <td>1.SINIF</td>
-                <td class='price-text'>18.940</td>
-                <td class='pos'>+150</td>
-                <td>PİK</td>
-                <td class='price-text'>19.100</td>
-                <td class='pos'>+200</td>
-                <td>2.GRUP</td>
-                <td class='price-text'>17.900</td>
-                <td class='pos'>+100</td>
-                <td>1.GRUP</td>
-                <td class='price-text'>19.350</td>
-                <td class='pos'>+500</td>
-                <td>İMALAT</td>
-                <td class='price-text'>17.200</td>
-                <td class='pos'>+200</td>
-                <td>2.GRUP</td>
-                <td class='price-text'>18.350</td>
-                <td class='pos'>+1.450</td>
-            </tr>
-            <tr>
-                <td>2.SINIF</td>
-                <td class='price-text'>19.500</td>
-                <td class='pos'>+200</td>
-                <td>1.GRUP</td>
-                <td class='price-text'>19.150</td>
-                <td class='pos'>+300</td>
-                <td>1.GRUP</td>
-                <td class='price-text'>18.080</td>
-                <td class='pos'>+800</td>
-                <td>TALAŞ</td>
-                <td class='price-text'>17.870</td>
-                <td class='pos'>+500</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>1.SINIF</td>
-                <td class='price-text'>17.700</td>
-                <td class='neutral'>0</td>
-                <td>3.GRUP</td>
-                <td class='price-text'>16.250</td>
-                <td class='pos'>+100</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>EKSTRA</td>
-                <td class='price-text'>12.000</td>
-                <td class='pos'>+200</td>
-                <td>3.GRUP</td>
-                <td class='price-text'>14.950</td>
-                <td class='pos'>+550</td>
-            </tr>
-            <tr>
-                <td>BÜYÜK PARÇA İSKONTOS</td>
-                <td class='price-text'>1.250</td>
-                <td class='neutral'>0</td>
-                <td>2.GRUP</td>
-                <td class='price-text'>16.650</td>
-                <td class='pos'>+300</td>
-                <td>2.GRUP</td>
-                <td class='price-text'>15.600</td>
-                <td class='pos'>+800</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>2.SINIF</td>
-                <td class='price-text'>17.550</td>
-                <td class='neutral'>0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>TALAŞ</td>
-                <td class='price-text'>14.500</td>
-                <td class='pos'>+700</td>
-                <td>Büyük Parça İskontos</td>
-                <td class='price-text'>1.500</td>
-                <td class='neutral'>0</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>3.SINIF</td>
-                <td class='price-text'>15.600</td>
-                <td class='neutral'>0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>TALAŞ</td>
-                <td class='price-text'>15.000</td>
-                <td class='neutral'>0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-        </table>
-        <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
-            <a href="index.html" style="display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-family: sans-serif;">Ana Sayfa</a>
-        </div>
-    </div>
-</body>
-</html>
+ <h2>Fabrika Güncel Hurda Demir Fiyatları (25.11.2026 10:21)</h2>
+ <div class='table-container'>
+ <table>
+ <tr>
+ <th colspan='3' class='fab-border'>KARDEMİR</th>
+ <th colspan='3' class='fab-border'>ERDEMİR</th>
+ <th colspan='3' class='fab-border'>İSDEMİR</th>
+ <th colspan='3' class='fab-border'>ÇOLAKOĞLU</th>
+ <th colspan='3' class='fab-border'>ASİL ÇELİK</th>
+ <th colspan='3' class='fab-border'>KROMAN</th>
+ <th colspan='3' class='fab-border'>DİLER</th>
+ <th colspan='3' class='fab-border'>HASÇELİK</th>
+ <th colspan='3' class='fab-border'>CANSAN</th>
+ <th colspan='3' class='fab-border'>SİLVAN ST</th>
+ </tr>
+ <tr class='date-row'>
+ <td colspan='3' class='today-cell fab-border'>25.11.2026 (BUGÜN)</td>
+ <td colspan='3' class='fab-border'>17.11.2026</td>
+ <td colspan='3' class='fab-border'>11.11.2026</td>
+ <td colspan='3' class='today-cell fab-border'>25.11.2026 (BUGÜN)</td>
+ <td colspan='3' class='today-cell fab-border'>25.11.2026 (BUGÜN)</td>
+ <td colspan='3' class='today-cell fab-border'>25.11.2026 (BUGÜN)</td>
+ <td colspan='3' class='today-cell fab-border'>25.11.2026 (BUGÜN)</td>
+ <td colspan='3' class='today-cell fab-border'>25.11.2026 (BUGÜN)</td>
+ <td colspan='3' class='fab-border'>17.11.2026</td>
+ <td colspan='3' class='fab-border'>18.11.2026</td>
+ </tr>
+ <tr>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ <td class='sub-header'>Cinsi</td>
+ <td class='sub-header price-header'>Fiyatı (TL)</td>
+ <td class='sub-header fab-border'>Değişim</td>
+ </tr>
+ <tr>
+ <td>ÖZEL EKSTRA</td>
+ <td class='price-text' data-tl='20620'>20.620</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='20450'>20.450</td>
+ <td class='pos fab-border change-text' data-change-tl='300'>+300</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='19150'>19.150</td>
+ <td class='pos fab-border change-text' data-change-tl='800'>+800</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='20355'>20.355</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='21200'>21.200</td>
+ <td class='pos fab-border change-text' data-change-tl='350'>+350</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='20355'>20.355</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='19600'>19.600</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='21250'>21.250</td>
+ <td class='pos fab-border change-text' data-change-tl='700'>+700</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='19100'>19.100</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>DKP</td>
+ <td class='price-text' data-tl='19850'>19.850</td>
+ <td class='pos fab-border change-text' data-change-tl='750'>+750</td>
+ </tr>
+ <tr>
+ <td>DKP HURDA</td>
+ <td class='price-text' data-tl='20600'>20.600</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='20400'>20.400</td>
+ <td class='pos fab-border change-text' data-change-tl='300'>+300</td>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='19100'>19.100</td>
+ <td class='pos fab-border change-text' data-change-tl='800'>+800</td>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='19530'>19.530</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>BONUS</td>
+ <td class='price-text' data-tl='20805'>20.805</td>
+ <td class='pos fab-border change-text' data-change-tl='350'>+350</td>
+ <td>BONUS**</td>
+ <td class='price-text' data-tl='19600'>19.600</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='19500'>19.500</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>BONUS</td>
+ <td class='price-text' data-tl='20350'>20.350</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>TOP SİS</td>
+ <td class='price-text' data-tl='18900'>18.900</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>EKSTRA  OCAKLIK</td>
+ <td class='price-text' data-tl='19250'>19.250</td>
+ <td class='pos fab-border change-text' data-change-tl='750'>+750</td>
+ </tr>
+ <tr>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='20350'>20.350</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>EBATSIZ İMALAT</td>
+ <td class='price-text' data-tl='19950'>19.950</td>
+ <td class='pos fab-border change-text' data-change-tl='300'>+300</td>
+ <td>BONUS</td>
+ <td class='price-text' data-tl='19000'>19.000</td>
+ <td class='pos fab-border change-text' data-change-tl='800'>+800</td>
+ <td>1.GRUP</td>
+ <td class='price-text' data-tl='19390'>19.390</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='19800'>19.800</td>
+ <td class='pos fab-border change-text' data-change-tl='350'>+350</td>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='19600'>19.600</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>1.GRUP</td>
+ <td class='price-text' data-tl='18700'>18.700</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='19850'>19.850</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>BONUS</td>
+ <td class='price-text' data-tl='18200'>18.200</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>1.GRUP</td>
+ <td class='price-text' data-tl='18850'>18.850</td>
+ <td class='pos fab-border change-text' data-change-tl='950'>+950</td>
+ </tr>
+ <tr>
+ <td>1.SINIF</td>
+ <td class='price-text' data-tl='19800'>19.800</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>BONUS</td>
+ <td class='price-text' data-tl='19650'>19.650</td>
+ <td class='pos fab-border change-text' data-change-tl='300'>+300</td>
+ <td>MAKAS</td>
+ <td class='price-text' data-tl='18500'>18.500</td>
+ <td class='pos fab-border change-text' data-change-tl='800'>+800</td>
+ <td>2.GRUP</td>
+ <td class='price-text' data-tl='19320'>19.320</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>1.SINIF</td>
+ <td class='price-text' data-tl='19290'>19.290</td>
+ <td class='pos fab-border change-text' data-change-tl='350'>+350</td>
+ <td>PİK</td>
+ <td class='price-text' data-tl='19600'>19.600</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>2.GRUP</td>
+ <td class='price-text' data-tl='17900'>17.900</td>
+ <td class='pos fab-border change-text' data-change-tl='100'>+100</td>
+ <td>1.GRUP</td>
+ <td class='price-text' data-tl='19350'>19.350</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>İMALAT</td>
+ <td class='price-text' data-tl='17200'>17.200</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>2.GRUP</td>
+ <td class='price-text' data-tl='18350'>18.350</td>
+ <td class='pos fab-border change-text' data-change-tl='1.45'>+1.450</td>
+ </tr>
+ <tr>
+ <td>2.SINIF</td>
+ <td class='price-text' data-tl='19500'>19.500</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>1.GRUP</td>
+ <td class='price-text' data-tl='19150'>19.150</td>
+ <td class='pos fab-border change-text' data-change-tl='300'>+300</td>
+ <td>1.GRUP</td>
+ <td class='price-text' data-tl='18080'>18.080</td>
+ <td class='pos fab-border change-text' data-change-tl='800'>+800</td>
+ <td>TALAŞ</td>
+ <td class='price-text' data-tl='17870'>17.870</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>1.SINIF</td>
+ <td class='price-text' data-tl='18200'>18.200</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>3.GRUP</td>
+ <td class='price-text' data-tl='16250'>16.250</td>
+ <td class='pos fab-border change-text' data-change-tl='100'>+100</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>EKSTRA</td>
+ <td class='price-text' data-tl='12000'>12.000</td>
+ <td class='pos fab-border change-text' data-change-tl='200'>+200</td>
+ <td>3.GRUP</td>
+ <td class='price-text' data-tl='14950'>14.950</td>
+ <td class='pos fab-border change-text' data-change-tl='550'>+550</td>
+ </tr>
+ <tr>
+ <td>BÜYÜK PARÇA İSKONTOS</td>
+ <td class='price-text' data-tl='1250'>1.250</td>
+ <td class='neutral fab-border change-text' data-change-tl='0'>0</td>
+ <td>2.GRUP</td>
+ <td class='price-text' data-tl='16650'>16.650</td>
+ <td class='pos fab-border change-text' data-change-tl='300'>+300</td>
+ <td>2.GRUP</td>
+ <td class='price-text' data-tl='15600'>15.600</td>
+ <td class='pos fab-border change-text' data-change-tl='800'>+800</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>2.SINIF</td>
+ <td class='price-text' data-tl='18050'>18.050</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>TALAŞ</td>
+ <td class='price-text' data-tl='14500'>14.500</td>
+ <td class='pos fab-border change-text' data-change-tl='700'>+700</td>
+ <td>Büyük Parça İskontos</td>
+ <td class='price-text' data-tl='1500'>1.500</td>
+ <td class='neutral fab-border change-text' data-change-tl='0'>0</td>
+ </tr>
+ <tr>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>3.SINIF</td>
+ <td class='price-text' data-tl='16100'>16.100</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ </tr>
+ <tr>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>TALAŞ</td>
+ <td class='price-text' data-tl='15500'>15.500</td>
+ <td class='pos fab-border change-text' data-change-tl='500'>+500</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ <td>-</td>
+ <td>-</td>
+ <td class='fab-border'>-</td>
+ </tr>
+ </table>
+ </div>
+ <div class='footer-panel'>
+ <div class='rates-box'>
+ <div id='usd-box' class='rate-badge'>USD (Dolar): 50,6800 ₺</div>
+ <div id='eur-box' class='rate-badge'>EUR (Euro): 55,4400 ₺</div>
+ </div>
+ <div class='currency-buttons'>
+ <button id='btn-TL' class='curr-btn active' onclick="setCurrency('TL')">TL (₺) Göster</button>
+ <button id='btn-USD' class='curr-btn' onclick="setCurrency('USD')">Dolar ($) Çevir</button>
+ <button id='btn-EUR' class='curr-btn' onclick="setCurrency('EUR')">Euro (€) Çevir</button>
+ </div>
+ <a href='index.html' class='home-btn'>Ana Sayfa</a>
+ </div>
+ <script>
+ const usdRate = 50.68;
+ const eurRate = 55.44;
+ function setCurrency(curr) {
+ if ((curr === 'USD' && usdRate <= 0) || (curr === 'EUR' && eurRate <= 0)) {
+ alert('Güncel kur bilgisi alınamadığı için dönüşüm yapılamıyor.'); return;
+ }
+ document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active'));
+ document.getElementById('btn-' + curr).classList.add('active');
+ let symbol = curr === 'TL' ? 'TL' : (curr === 'USD' ? '$' : '€');
+ document.querySelectorAll('.price-header').forEach(h => h.innerText = 'Fiyatı (' + symbol + ')');
+ document.querySelectorAll('.price-text').forEach(cell => {
+ const tlVal = parseFloat(cell.getAttribute('data-tl'));
+ if (!isNaN(tlVal)) {
+ if (curr === 'TL') {
+ cell.innerText = tlVal.toLocaleString('tr-TR', { maximumFractionDigits: 0 });
+ } else if (curr === 'USD') {
+ cell.innerText = (tlVal / usdRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+ } else if (curr === 'EUR') {
+ cell.innerText = (tlVal / eurRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+ }
+ }
+ });
+ document.querySelectorAll('.change-text').forEach(cell => {
+ const chgTl = parseFloat(cell.getAttribute('data-change-tl'));
+ if (!isNaN(chgTl)) {
+ let sign = chgTl > 0 ? '+' : '';
+ if (curr === 'TL') {
+ cell.innerText = sign + chgTl.toLocaleString('tr-TR', { maximumFractionDigits: 0 });
+ } else if (curr === 'USD') {
+ cell.innerText = sign + (chgTl / usdRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+ } else if (curr === 'EUR') {
+ cell.innerText = sign + (chgTl / eurRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+ }
+ }
+ });
+ }
+ </script>
