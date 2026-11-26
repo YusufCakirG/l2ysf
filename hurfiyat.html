@@ -31,7 +31,7 @@
  </style>
 </head>
 <body>
- <h2>Fabrika Güncel Hurda Demir Fiyatları (26.11.2026 08:10)</h2>
+ <h2>Fabrika Güncel Hurda Demir Fiyatları (26.11.2026 10:41)</h2>
  <div class='table-container'>
  <table>
  <tr>
@@ -351,7 +351,7 @@
  <div class='footer-panel'>
  <div class='rates-box'>
  <div id='usd-box' class='rate-badge'>USD (Dolar): 50,6800 ₺</div>
- <div id='eur-box' class='rate-badge'>EUR (Euro): 55,7300 ₺</div>
+ <div id='eur-box' class='rate-badge'>EUR (Euro): 55,7800 ₺</div>
  </div>
  <div class='currency-buttons'>
  <button id='btn-TL' class='curr-btn active' onclick="setCurrency('TL')">TL (₺) Göster</button>
@@ -362,7 +362,7 @@
  </div>
  <script>
  const usdRate = 50.68;
- const eurRate = 55.73;
+ const eurRate = 55.78;
  function setCurrency(curr) {
  if ((curr === 'USD' && usdRate <= 0) || (curr === 'EUR' && eurRate <= 0)) {
  alert('Güncel kur bilgisi alınamadığı için dönüşüm yapılamıyor.'); return;
@@ -377,9 +377,9 @@
  if (curr === 'TL') {
  cell.innerText = tlVal.toLocaleString('tr-TR', { maximumFractionDigits: 0 });
  } else if (curr === 'USD') {
- cell.innerText = (tlVal / usdRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+ cell.innerText = (tlVal / usdRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
  } else if (curr === 'EUR') {
- cell.innerText = (tlVal / eurRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+ cell.innerText = (tlVal / eurRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ;
  }
  }
  });
@@ -390,9 +390,9 @@
  if (curr === 'TL') {
  cell.innerText = sign + chgTl.toLocaleString('tr-TR', { maximumFractionDigits: 0 });
  } else if (curr === 'USD') {
- cell.innerText = sign + (chgTl / usdRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+ cell.innerText = sign + (chgTl / usdRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ;
  } else if (curr === 'EUR') {
- cell.innerText = sign + (chgTl / eurRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+ cell.innerText = sign + (chgTl / eurRate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ;
  }
  }
  });
