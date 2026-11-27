@@ -415,12 +415,12 @@ else{
         if (secilenTarih) {
             apiTargetUrl += `&ANA_DATE=gte.${secilenTarih}T00:00:00&ANA_DATE=lte.${secilenTarih}T23:59:59`;
         }
-	if (secilenKonum && secilenKonum !== 'ALL') {
+	if (secilenKonum !== 'ALL') {
             const temizKonum = secilenKonum.trim();
             apiTargetUrl += `&LOCAT=ilike.*${temizKonum}*`;
            
             } else {
-                 apiTargetUrl += `&DESCR=not.ilike.*YF/*`;
+                apiTargetUrl += `&LOCAT=not.ilike.*YF/*&LOCAT=not.ilike.*DESU*`;
             }
 
         apiTargetUrl += `&order=ANA_NO.desc`;
