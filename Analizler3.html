@@ -418,7 +418,10 @@ else{
 	if (secilenKonum && secilenKonum !== 'ALL') {
             const temizKonum = secilenKonum.trim();
             apiTargetUrl += `&LOCAT=ilike.*${temizKonum}*`;
-        }
+           
+            } else {
+                 apiTargetUrl += `&DESCR=not.ilike.*YF/*`;
+            }
 
         apiTargetUrl += `&order=ANA_NO.desc`;
 	}
